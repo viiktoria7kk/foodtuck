@@ -1,0 +1,21 @@
+{
+  "name": "foodtuck",
+  "version": "1.0.0",
+  "description": "Backend for a restaurant website",
+  "main": "dist/app.js",
+  "scripts": {
+    "build": "tsc",
+    "start": "nodemon ."
+  },
+  "author": "Viktoriia Kostak",
+  "license": "ISC",
+  "devDependencies": {
+    "nodemon": "^3.1.0",
+    "typescript": "^5.4.4"
+  },
+  "dependencies": {
+    "@types/express": "^4.17.21",
+    "dotenv": "^16.4.5",
+    "express": "^4.19.2"
+  }
+}
