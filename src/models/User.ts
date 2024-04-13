@@ -1,7 +1,5 @@
-import { Schema, model, connect } from 'mongoose'
-import dotenv from 'dotenv'
+import { Schema, model } from 'mongoose'
 
-dotenv.config()
 export interface IUser {
   name: string
   email: string

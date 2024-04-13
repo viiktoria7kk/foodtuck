@@ -1,4 +1,5 @@
-import { router } from './routes/user'
+import { userRouter } from './routes/user'
+import { dishRouter } from './routes/dish'
 import express, { Application } from 'express'
 import mongoose from 'mongoose'
 import dotenv from 'dotenv'
@@ -18,7 +19,9 @@ mongoose
 app.use(express.json())
 app.use(express.urlencoded({ extended: true }))
 
-app.use('/user', router)
+app.use('/user', userRouter)
+app.use('/menu', dishRouter)
+
 
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`)

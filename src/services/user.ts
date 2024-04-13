@@ -55,7 +55,7 @@ export class UserService {
 
   public async getUserByEmail(req: Request, res: Response): Promise<Response> {
     try {
-      const { email } = req.params
+      const { email } = req.body
       const user = await User.findOne({
         email,
       })
