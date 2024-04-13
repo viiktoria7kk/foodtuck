@@ -5,11 +5,12 @@ import mongoose from 'mongoose'
 import dotenv from 'dotenv'
 import { categoryRouter } from './routes/category'
 import { chefRouter } from './routes/chef'
+import { cheekoutRouter } from './routes/cheekout'
 
 dotenv.config()
-
 const app: Application = express()
 const PORT = process.env.PORT
+
 mongoose
   .connect(process.env.DB_URL as string, {})
   .then(() => console.log('MongoDB Connected'))
@@ -25,6 +26,7 @@ app.use('/user', userRouter)
 app.use('/menu', dishRouter)
 app.use('/category', categoryRouter)
 app.use('/chef', chefRouter)
+app.use('/cheekout', cheekoutRouter)
 
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`)
