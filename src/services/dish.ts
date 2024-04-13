@@ -52,4 +52,14 @@ export class DishService {
       res.status(500).json({ error: error.message })
     }
   }
+
+  public async getDishByCategory(req: Request, res: Response): Promise<Response> {
+    try {
+      const { category } = req.params
+      const dishes = await Dish.find({ category: category })
+      return res.status(200).json(dishes)
+    } catch (error) {
+      res.status(500).json({ error: error.message })
+    }
+  }
 }

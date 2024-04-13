@@ -1,9 +1,10 @@
 import { Schema, model } from 'mongoose'
+import { Categories } from 'src/enums/Category'
 
 export interface IDish {
   title: string
   description: string
-  category: string
+  category: Categories
   price: string
   img: string
 }

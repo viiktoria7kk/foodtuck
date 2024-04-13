@@ -61,4 +61,16 @@ export class DishController {
       }
     }
   }
+
+  public async getDishByCategory(req: Request, res: Response): Promise<void> {
+    try {
+      const dishService = new DishService()
+      const dishes = await dishService.getDishByCategory(req, res)
+      res.status(200).json(dishes)
+    } catch (error) {
+      if (!res.headersSent) {
+        res.status(500).json({ error: error.message })
+      }
+    }
+  }
 }
