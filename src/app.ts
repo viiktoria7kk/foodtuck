@@ -4,6 +4,7 @@ import express, { Application } from 'express'
 import mongoose from 'mongoose'
 import dotenv from 'dotenv'
 import { categoryRouter } from './routes/category'
+import { chefRouter } from './routes/chef'
 
 dotenv.config()
 
@@ -23,6 +24,7 @@ app.use(express.urlencoded({ extended: true }))
 app.use('/user', userRouter)
 app.use('/menu', dishRouter)
 app.use('/category', categoryRouter)
+app.use('/chef', chefRouter)
 
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`)
