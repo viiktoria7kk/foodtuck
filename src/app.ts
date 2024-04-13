@@ -1,11 +1,25 @@
-import express, { Application, Request, Response, NextFunction } from "express";
-import "dotenv/config";
+import { router } from './routes/user'
+import express, { Application } from 'express'
+import mongoose from 'mongoose'
+import dotenv from 'dotenv'
 
-const app: Application = express();
+dotenv.config()
 
-app.use("/", (req: Request, res: Response, next: NextFunction) => {
-  res.status(200).send({ data: "init project" });
-});
+const app: Application = express()
+const PORT = process.env.PORT
+mongoose
+  .connect(process.env.DB_URL as string, {})
+  .then(() => console.log('MongoDB Connected'))
+  .catch((err) => {
+    console.error('MongoDB connection error:', err)
+    process.exit(1)
+  })
 
-const PORT = process.env.PORT;
-app.listen(PORT, () => console.log(`Server is listening on port ${PORT}!`));
+app.use(express.json())
+app.use(express.urlencoded({ extended: true }))
+
+app.use('/user', router)
+
+app.listen(PORT, () => {
+  console.log(`Server running on port ${PORT}`)
+})
