@@ -6,7 +6,7 @@ export class CheekoutService {
     try {
       const newCheekout = new Cheekout(cheekout)
       await newCheekout.save()
-      return newCheekout
+      return newCheekout.toObject()
     } catch (error) {
       throw error
     }
@@ -15,7 +15,7 @@ export class CheekoutService {
   public async getCheekout(): Promise<CheekoutType[]> {
     try {
       const cheekouts = await Cheekout.find()
-      return cheekouts
+      return cheekouts.map((cheekout) => cheekout.toObject())
     } catch (error) {
       throw error
     }
@@ -24,7 +24,7 @@ export class CheekoutService {
   public async getCheekoutById(id: string): Promise<CheekoutType> {
     try {
       const cheekout = await Cheekout.findById(id)
-      return cheekout
+      return cheekout.toObject()
     } catch (error) {
       throw error
     }
@@ -41,7 +41,7 @@ export class CheekoutService {
   public async getCheekoutByName(name: string): Promise<CheekoutType[]> {
     try {
       const cheekouts = await Cheekout.find({ name: name })
-      return cheekouts
+      return cheekouts.map((cheekout) => cheekout.toObject())
     } catch (error) {
       throw error
     }
@@ -49,8 +49,8 @@ export class CheekoutService {
 
   public async updateCheekoutById(id: string, cheekout: CheekoutType): Promise<CheekoutType> {
     try {
-      await Cheekout.findByIdAndUpdate(id, cheekout)
-      return cheekout
+      const updatedCheekout = await Cheekout.findByIdAndUpdate(id, cheekout, { new: true })
+      return updatedCheekout.toObject()
     } catch (error) {
       throw error
     }

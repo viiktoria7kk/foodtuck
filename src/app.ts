@@ -6,6 +6,7 @@ import dotenv from 'dotenv'
 import { categoryRouter } from './routes/category'
 import { chefRouter } from './routes/chef'
 import { cheekoutRouter } from './routes/cheekout'
+import { commentRouter } from './routes/comment'
 
 dotenv.config()
 const app: Application = express()
@@ -27,6 +28,7 @@ app.use('/menu', dishRouter)
 app.use('/category', categoryRouter)
 app.use('/chef', chefRouter)
 app.use('/cheekout', cheekoutRouter)
+app.use('/comment', commentRouter)
 
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`)
