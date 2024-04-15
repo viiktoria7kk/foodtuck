@@ -1,17 +1,23 @@
-import { Schema, model } from 'mongoose'
+import { Schema, model, Document } from 'mongoose'
+import bcrypt from 'bcryptjs'
 
-export interface IUser {
+export interface IUser extends Document {
   name: string
   email: string
   password: string
-  avatar: string
+  avatar?: string
+  matchPassword: (enteredPassword: string) => Promise<boolean>
 }
 
-export const UserSchema = new Schema<IUser>({
+const userSchema = new Schema<IUser>({
   name: { type: String, required: true },
   email: { type: String, required: true },
   password: { type: String, required: true },
   avatar: { type: String, required: false },
 })
 
-export const User = model<IUser>('User', UserSchema)
+userSchema.methods.matchPassword = async function (enteredPassword: string) {
+  return await bcrypt.compare(enteredPassword, this.password)
+}
+
+export const User = model<IUser>('User', userSchema)

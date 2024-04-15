@@ -73,4 +73,28 @@ export class UserController {
       }
     }
   }
+
+  public async loginUser(req: Request, res: Response): Promise<void> {
+    try {
+      const userService = new UserService()
+      const user = await userService.loginUser(req, res)
+      res.status(200).json(user)
+    } catch (error) {
+      if (!res.headersSent) {
+        res.status(500).json({ error: error.message })
+      }
+    }
+  }
+
+  public async registerUser(req: Request, res: Response): Promise<void> {
+    try {
+      const userService = new UserService()
+      const user = await userService.registerUser(req, res)
+      res.status(200).json(user)
+    } catch (error) {
+      if (!res.headersSent) {
+        res.status(500).json({ error: error.message })
+      }
+    }
+  }
 }
