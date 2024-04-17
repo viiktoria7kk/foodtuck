@@ -5,6 +5,7 @@ export interface IComment {
   user: UserType
   content: string
   date: Date
+  postId: string
 }
 
 export const CommentSchema = new Schema<IComment>({

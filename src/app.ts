@@ -1,12 +1,13 @@
 import { userRouter } from './routes/user'
 import { dishRouter } from './routes/dish'
-import express, { Application } from 'express'
+import express, { Application, RequestHandler } from 'express'
 import mongoose from 'mongoose'
 import dotenv from 'dotenv'
 import { categoryRouter } from './routes/category'
 import { chefRouter } from './routes/chef'
 import { cheekoutRouter } from './routes/cheekout'
 import { commentRouter } from './routes/comment'
+import { postRouter } from './routes/post'
 
 dotenv.config()
 const app: Application = express()
@@ -29,6 +30,7 @@ app.use('/category', categoryRouter)
 app.use('/chef', chefRouter)
 app.use('/cheekout', cheekoutRouter)
 app.use('/comment', commentRouter)
+app.use('/post', postRouter)
 
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`)
