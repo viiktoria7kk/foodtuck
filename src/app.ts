@@ -1,6 +1,6 @@
 import { userRouter } from './routes/user'
 import { dishRouter } from './routes/dish'
-import express, { Application, RequestHandler } from 'express'
+import express, { Application } from 'express'
 import mongoose from 'mongoose'
 import dotenv from 'dotenv'
 import { categoryRouter } from './routes/category'
@@ -8,11 +8,11 @@ import { chefRouter } from './routes/chef'
 import { cheekoutRouter } from './routes/cheekout'
 import { commentRouter } from './routes/comment'
 import { postRouter } from './routes/post'
+import { swaggerSetup } from './doc/swagger'
 
 dotenv.config()
 const app: Application = express()
 const PORT = process.env.PORT
-
 mongoose
   .connect(process.env.DB_URL as string, {})
   .then(() => console.log('MongoDB Connected'))
@@ -34,4 +34,6 @@ app.use('/post', postRouter)
 
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`)
+  swaggerSetup(app)
 })
+
