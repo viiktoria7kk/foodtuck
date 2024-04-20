@@ -1,9 +1,15 @@
-import { CategoryService } from "../services/category"
-import { Request, Response } from "express"
+import { CategoryService } from '../services/category'
+import { Request, Response } from 'express'
+import { validateCategory } from '../utils/validation'
 
 export class CategoryController {
   public async createCategory(req: Request, res: Response): Promise<void> {
     try {
+      const { error } = validateCategory(req.body)
+      if (error) {
+        res.status(400).json({ error: error.details[0].message })
+        return
+      }
       const categoryService = new CategoryService()
       const newCategory = await categoryService.createCategory(req, res)
       res.status(201).json(newCategory)
@@ -28,6 +34,11 @@ export class CategoryController {
 
   public async updateCategory(req: Request, res: Response): Promise<void> {
     try {
+      const { error } = validateCategory(req.body)
+      if (error) {
+        res.status(400).json({ error: error.details[0].message })
+        return
+      }
       const categoryService = new CategoryService()
       const updatedCategory = await categoryService.updateCategory(req, res)
       res.status(200).json(updatedCategory)

@@ -1,9 +1,15 @@
 import { Request, Response } from 'express'
 import { UserService } from '../services/user'
+import { validateUser } from '../utils/validation'
 
 export class UserController {
   public async createUser(req: Request, res: Response): Promise<void> {
     try {
+      const { error } = validateUser(req.body)
+      if (error) {
+        res.status(400).json({ error: error.details[0].message })
+        return
+      }
       const userService = new UserService()
       const newUser = await userService.createUser(req, res)
       res.status(201).json(newUser)
@@ -28,6 +34,11 @@ export class UserController {
 
   public async updateUser(req: Request, res: Response): Promise<void> {
     try {
+      const { error } = validateUser(req.body)
+      if (error) {
+        res.status(400).json({ error: error.details[0].message })
+        return
+      }
       const userService = new UserService()
       const updatedUser = await userService.updateUser(req, res)
       res.status(200).json(updatedUser)
@@ -76,6 +87,11 @@ export class UserController {
 
   public async loginUser(req: Request, res: Response): Promise<void> {
     try {
+      const { error } = validateUser(req.body)
+      if (error) {
+        res.status(400).json({ error: error.details[0].message })
+        return
+      }
       const userService = new UserService()
       const user = await userService.loginUser(req, res)
       res.status(200).json(user)
@@ -88,6 +104,11 @@ export class UserController {
 
   public async registerUser(req: Request, res: Response): Promise<void> {
     try {
+      const { error } = validateUser(req.body)
+      if (error) {
+        res.status(400).json({ error: error.details[0].message })
+        return
+      }
       const userService = new UserService()
       const user = await userService.registerUser(req, res)
       res.status(200).json(user)

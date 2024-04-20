@@ -1,4 +1,5 @@
 import { Schema, model } from 'mongoose'
+import { Comment } from './Comment'
 
 export interface IPost {
   img: string[]
@@ -6,7 +7,7 @@ export interface IPost {
   title: string
   description: string
   text: string
-  comments: string[] // змінено з Comment[] на string[]
+  comments: string[]
 }
 
 /**
@@ -48,8 +49,7 @@ export interface IPost {
  *           example: 'Lorem ipsum dolor sit amet...'
  *         comments:
  *           type: array
- *           items:
- *             type: string
+ *          items:
  *           description: The IDs of comments associated with the post
  *           example:
  *             - '610d08a22c076b0015f42d5d'

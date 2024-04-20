@@ -1,5 +1,6 @@
 import { CommentService } from "../services/comment";
 import { Request, Response } from "express";
+import { validateComment } from "../utils/validation";
 
 
 export class CommentController {
@@ -7,6 +8,11 @@ export class CommentController {
 
   public createComment = async (req: Request, res: Response): Promise<void> => {
     try {
+      const { error } = validateComment(req.body);
+      if (error) {
+        res.status(400).json({ error: error.details[0].message });
+        return;
+      }
       const comment = req.body;
       const newComment = await this.commentService.createComment(comment);
       res.status(201).json(newComment);
@@ -56,6 +62,11 @@ export class CommentController {
 
   public updateCommentById = async (req: Request, res: Response): Promise<void> => {
     try {
+      const { error } = validateComment(req.body);
+      if (error) {
+        res.status(400).json({ error: error.details[0].message });
+        return;
+      }
       const id = req.params.id;
       const comment = req.body;
       const updatedComment = await this.commentService.updateCommentById(id, comment);

@@ -1,12 +1,18 @@
 import { ChefService } from '../services/chef'
 import { Request, Response } from 'express'
+import { validateChef } from '../utils/validation'
 
 export class ChefController {
   public async createChef(req: Request, res: Response): Promise<void> {
     try {
+      const { error } = validateChef(req.body)
+      if (error) {
+        res.status(400).json({ error: error.details[0].message })
+        return
+      }
       const chefService = new ChefService()
-      const newChef = await chefService.createChef(req.body)
-      res.status(201).json(newChef)
+      const chef = await chefService.createChef(req.body)
+      res.status(201).json(chef)
     } catch (error) {
       if (!res.headersSent) {
         res.status(500).json({ error: error.message })

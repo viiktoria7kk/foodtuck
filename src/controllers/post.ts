@@ -1,9 +1,15 @@
 import { PostService } from '../services/post'
 import { Request, Response } from 'express'
+import { validatePost } from '../utils/validation'
 
 export class PostController {
   public async createPost(req: Request, res: Response): Promise<void> {
     try {
+      const { error } = validatePost(req.body)
+      if (error) {
+        res.status(400).json({ error: error.details[0].message })
+        return
+      }
       const postService = new PostService()
       const newPost = await postService.createPost(req, res)
       res.status(201).json(newPost)
@@ -28,6 +34,11 @@ export class PostController {
 
   public async updatePost(req: Request, res: Response): Promise<void> {
     try {
+      const { error } = validatePost(req.body)
+      if (error) {
+        res.status(400).json({ error: error.details[0].message })
+        return
+      }
       const postService = new PostService()
       const updatedPost = await postService.updatePost(req, res)
       res.status(200).json(updatedPost)

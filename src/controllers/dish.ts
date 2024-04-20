@@ -1,9 +1,15 @@
 import { Request, Response } from 'express'
 import { DishService } from '../services/dish'
+import { validateDish } from '../utils/validation'
 
 export class DishController {
   public async createDish(req: Request, res: Response): Promise<void> {
     try {
+      const { error } = validateDish(req.body)
+      if (error) {
+        res.status(400).json({ error: error.details[0].message })
+        return
+      }
       const dishService = new DishService()
       const newDish = await dishService.createDish(req, res)
       res.status(201).json(newDish)
@@ -28,6 +34,11 @@ export class DishController {
 
   public async updateDish(req: Request, res: Response): Promise<void> {
     try {
+      const { error } = validateDish(req.body)
+      if (error) {
+        res.status(400).json({ error: error.details[0].message })
+        return
+      }
       const dishService = new DishService()
       const updatedDish = await dishService.updateDish(req, res)
       res.status(200).json(updatedDish)
