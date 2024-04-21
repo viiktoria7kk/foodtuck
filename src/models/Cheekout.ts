@@ -56,3 +56,7 @@ export const CheekoutSchema = new Schema<ICheekout>({
 })
 
 export const Cheekout = model<ICheekout>('Cheekout', CheekoutSchema)
+
+
+
+
