@@ -1,5 +1,4 @@
 import { Schema, model } from 'mongoose'
-import { Comment } from './Comment'
 
 export interface IPost {
   img: string[]
@@ -49,11 +48,11 @@ export interface IPost {
  *           example: 'Lorem ipsum dolor sit amet...'
  *         comments:
  *           type: array
- *          items:
- *           description: The IDs of comments associated with the post
- *           example:
- *             - '610d08a22c076b0015f42d5d'
- *             - '610d08a22c076b0015f42d5e'
+ *           items:
+ *             description: The IDs of comments associated with the post
+ *             example:
+ *               - '610d08a22c076b0015f42d5d'
+ *               - '610d08a22c076b0015f42d5e'
  */
 
 export const PostSchema = new Schema<IPost>({
