@@ -6,7 +6,8 @@
   "scripts": {
     "build": "tsc",
     "watch": "tsc -w",
-    "start": "nodemon"
+    "start": "npm run build && node dist/app.js",
+    "start:dev": "nodemon"
   },
   "author": "Viktoriia Kostak",
   "license": "ISC",
