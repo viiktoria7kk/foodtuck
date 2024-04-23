@@ -7,7 +7,7 @@ const dishController = new DishController()
 /**
  * @openapi
  * tags:
- *   name: Dish
+ *   name: Menu
  *   description: Operations related to dishes
  */
 

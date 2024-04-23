@@ -16,10 +16,7 @@ const app: Application = express()
 
 connectDB()
 
-const corsOptions = {
-  origin: [process.env.URI1 as string, process.env.URI2 as string],
-}
-app.use(cors(corsOptions))
+app.use(cors())
 
 app.use(express.json())
 app.use(express.urlencoded({ extended: true }))
