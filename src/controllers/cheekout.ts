@@ -1,6 +1,6 @@
 import { CheekoutService } from '../services/cheekout'
 import { Request, Response } from 'express'
-import { validateCheekout } from '../utils/validation'
+import { validateCheekout } from '../utils/validation/validation'
 
 export class CheekoutController {
   private cheekoutService = new CheekoutService()

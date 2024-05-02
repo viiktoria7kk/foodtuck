@@ -1,6 +1,6 @@
 import { Request, Response } from 'express'
 import { UserService } from '../services/user'
-import { validateUser } from '../utils/validation'
+import { validateUser } from '../utils/validation/validation'
 
 export class UserController {
   public async createUser(req: Request, res: Response): Promise<void> {

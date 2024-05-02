@@ -1,6 +1,6 @@
 import { PostService } from '../services/post'
 import { Request, Response } from 'express'
-import { validatePost } from '../utils/validation'
+import { validatePost } from '../utils/validation/validation'
 
 export class PostController {
   public async createPost(req: Request, res: Response): Promise<void> {

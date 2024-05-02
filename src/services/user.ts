@@ -1,7 +1,7 @@
 import { Request, Response } from 'express'
 import { User } from '../models/User'
 import { UserType } from '../types/User'
-import { generateToken } from '../utils/generateToken'
+import { generateToken } from '../utils/token/generateToken'
 
 export class UserService {
   public async createUser(req: Request, res: Response): Promise<Response> {
