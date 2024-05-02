@@ -1,29 +1,29 @@
 import { Router } from 'express'
-import { ChefController } from '../controllers/chef'
+import { TeamMemberController } from '../controllers/teamMember'
 
-export const chefRouter = Router()
-const chefController = new ChefController()
+export const teamMemberRouter = Router()
+const teamMemberController = new TeamMemberController()
 
 /**
  * @openapi
  * tags:
- *   name: Chef
- *   description: Operations related to chefs
+ *   name: TeamMember
+ *   description: Operations related to Team Member
  */
 
 /**
  * @openapi
- * /chef:
+ * /team-member:
  *   post:
  *     tags:
- *       - Chef
- *     summary: Create a new chef
+ *       - TeamMember
+ *     summary: Create a new Team Member
  *     requestBody:
  *       required: true
  *       content:
  *         application/json:
  *           schema:
- *             $ref: '#/components/schemas/Chef'
+ *             $ref: '#/components/schemas/TeamMember'
  *     responses:
  *       '201':
  *         description: Created
@@ -32,32 +32,32 @@ const chefController = new ChefController()
  *       '500':
  *         description: Internal server error
  */
-chefRouter.post('/', chefController.createChef)
+teamMemberRouter.post('/', teamMemberController.createTeamMember)
 
 /**
  * @openapi
- * /chef:
+ * /team-member:
  *   get:
  *     tags:
- *       - Chef
- *     summary: Get all chefs
+ *       - TeamMember
+ *     summary: Get all team members
  *     responses:
  *       '200':
- *         description: A list of chefs
+ *         description: A list of team members
  *       '400':
  *         description: Bad request
  *       '500':
  *         description: Internal server error
  */
-chefRouter.get('/', chefController.getChef)
+teamMemberRouter.get('/', teamMemberController.getTeamMember)
 
 /**
  * @openapi
- * /chef/{id}:
+ * /team-member/{id}:
  *   get:
  *     tags:
- *       - Chef
- *     summary: Get a chef by id
+ *       - TeamMember
+ *     summary: Get a team member by id
  *     parameters:
  *       - in: path
  *         name: id
@@ -66,23 +66,23 @@ chefRouter.get('/', chefController.getChef)
  *           type: string
  *     responses:
  *       '200':
- *         description: A chef object
+ *         description: A team member object
  *       '400':
  *         description: Bad request
  *       '404':
- *         description: Chef not found
+ *         description: Team member not found
  *       '500':
  *         description: Internal server error
  */
-chefRouter.get('/:id', chefController.getChefById)
+teamMemberRouter.get('/:id', teamMemberController.getTeamMemberById)
 
 /**
  * @openapi
- * /chef/{id}:
+ * /team-member/{id}:
  *   delete:
  *     tags:
- *       - Chef
- *     summary: Delete a chef by id
+ *       - TeamMember
+ *     summary: Delete a team member by id
  *     parameters:
  *       - in: path
  *         name: id
@@ -91,21 +91,21 @@ chefRouter.get('/:id', chefController.getChefById)
  *           type: string
  *     responses:
  *       '204':
- *         description: Chef deleted
+ *         description: Team member deleted
  *       '404':
- *         description: Chef not found
+ *         description: Team member not found
  *       '500':
  *         description: Internal server error
  */
-chefRouter.delete('/:id', chefController.deleteChef)
+teamMemberRouter.delete('/:id', teamMemberController.deleteTeamMember)
 
 /**
  * @openapi
- * /chef/name/{name}:
+ * /team-member/name/{name}:
  *   get:
  *     tags:
- *       - Chef
- *     summary: Get a chef by name
+ *       - TeamMember
+ *     summary: Get a team member by name
  *     parameters:
  *       - in: path
  *         name: name
@@ -114,12 +114,12 @@ chefRouter.delete('/:id', chefController.deleteChef)
  *           type: string
  *     responses:
  *       '200':
- *         description: A chef object
+ *         description: A team member object
  *       '400':
  *         description: Bad request
  *       '404':
- *         description: Chef not found
+ *         description: Team member not found
  *       '500':
  *         description: Internal server error
  */
-chefRouter.get('/name/:name', chefController.getChefByName)
+teamMemberRouter.get('/name/:name', teamMemberController.getTeamMemberByName)

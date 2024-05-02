@@ -1,11 +1,11 @@
 import Joi from 'joi'
-import { Categories } from '../enums/Category'
-import { DishType } from '../types/Dish'
+import { Categories } from '../enums/categories'
+import { DishType } from '../../types/Dish'
 import { CommentType } from 'src/types/Comment'
 import { CheekoutType } from 'src/types/Cheekout'
-import { ChefType } from 'src/types/Chef'
 import { PostType } from 'src/types/Post'
 import { UserType } from 'src/types/User'
+import { TeamMemberType } from 'src/types/TeamMember'
 
 const userSchema = Joi.object({
   name: Joi.string().required(),
@@ -56,23 +56,14 @@ export const validateCheekout = (cheekout: CheekoutType) => {
   return schema.validate(cheekout)
 }
 
-export const validateCategory = (category: Categories) => {
-  const schema = Joi.object({
-    value: Joi.string()
-      .valid(...Object.values(Categories))
-      .required(),
-  })
-
-  return schema.validate(category)
-}
-
-export const validateChef = (chef: ChefType) => {
+export const validateTeamMember = (teamMember: TeamMemberType) => {
   const schema = Joi.object({
     name: Joi.string().required(),
-    avatar: Joi.string().required(),
+    avatar: Joi.string(),
+    status: Joi.string(),
   })
 
-  return schema.validate(chef)
+  return schema.validate(teamMember)
 }
 
 export const validatePost = (post: PostType) => {

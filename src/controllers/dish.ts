@@ -1,6 +1,6 @@
 import { Request, Response } from 'express'
 import { DishService } from '../services/dish'
-import { validateDish } from '../utils/validation'
+import { validateDish } from '../utils/validation/validation'
 
 export class DishController {
   public async createDish(req: Request, res: Response): Promise<void> {
