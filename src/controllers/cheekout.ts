@@ -1,77 +1,29 @@
 import { CheekoutService } from '../services/cheekout'
-import { Request, Response } from 'express'
+import { ICheekout } from '../models/Cheekout'
 import { validateCheekout } from '../utils/validation/validation'
 
 export class CheekoutController {
   private cheekoutService = new CheekoutService()
 
-  public createCheekout = async (req: Request, res: Response): Promise<void> => {
-    try {
-      const { error } = validateCheekout(req.body)
-      if (error) {
-        res.status(400).json({ error: error.details[0].message })
-        return
-      }
-      const cheekout = req.body
-      const newCheekout = await this.cheekoutService.createCheekout(cheekout)
-      res.status(201).json({ data: newCheekout, message: 'created' })
-    } catch (error) {
-      res.status(400).json({ message: error.message })
-    }
+  public async createCheekout(cheekout: ICheekout): Promise<ICheekout> {
+    const { error } = validateCheekout(cheekout)
+    if (error) throw new Error(error.details[0].message)
+    return await this.cheekoutService.createCheekout(cheekout)
   }
 
-  public getCheekout = async (req: Request, res: Response): Promise<void> => {
-    try {
-      const cheekouts = await this.cheekoutService.getCheekout()
-      res.status(200).json({ data: cheekouts })
-    } catch (error) {
-      res.status(400).json({ message: error.message })
-    }
+  public async getCheekout(): Promise<ICheekout[]> {
+    return await this.cheekoutService.getCheekout()
   }
 
-  public getCheekoutById = async (req: Request, res: Response): Promise<void> => {
-    try {
-      const id = req.params.id
-      const cheekout = await this.cheekoutService.getCheekoutById(id)
-      res.status(200).json({ data: cheekout })
-    } catch (error) {
-      res.status(400).json({ message: error.message })
-    }
+  public async getCheekoutById(id: string): Promise<ICheekout> {
+    return await this.cheekoutService.getCheekoutById(id)
   }
 
-  public deleteCheekout = async (req: Request, res: Response): Promise<void> => {
-    try {
-      const id = req.params.id
-      await this.cheekoutService.deleteCheekout(id)
-      res.status(200).json({ message: 'deleted' })
-    } catch (error) {
-      res.status(400).json({ message: error.message })
-    }
+  public async deleteCheekout(id: string): Promise<string> {
+    return await this.cheekoutService.deleteCheekout(id)
   }
 
-  public getCheekoutByName = async (req: Request, res: Response): Promise<void> => {
-    try {
-      const name = req.params.name
-      const cheekouts = await this.cheekoutService.getCheekoutByName(name)
-      res.status(200).json({ data: cheekouts })
-    } catch (error) {
-      res.status(400).json({ message: error.message })
-    }
-  }
-
-  public updateCheekoutById = async (req: Request, res: Response): Promise<void> => {
-    try {
-      const { error } = validateCheekout(req.body)
-      if (error) {
-        res.status(400).json({ error: error.details[0].message })
-        return
-      }
-      const id = req.params.id
-      const cheekout = req.body
-      const updatedCheekout = await this.cheekoutService.updateCheekoutById(id, cheekout)
-      res.status(200).json({ data: updatedCheekout, message: 'updated' })
-    } catch (error) {
-      res.status(400).json({ message: error.message })
-    }
+  public async getCheekoutByName(name: string): Promise<ICheekout[]> {
+    return await this.cheekoutService.getCheekoutByName(name)
   }
 }

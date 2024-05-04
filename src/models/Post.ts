@@ -1,12 +1,14 @@
-import { Schema, model } from 'mongoose'
+import { Schema, Types, model } from 'mongoose'
 
 export interface IPost {
+  id: Types.ObjectId
   img: string[]
   date: Date
   title: string
   description: string
   text: string
-  comments: string[]
+  comments: Types.ObjectId[]
+  tags: string[]
 }
 
 /**
@@ -21,6 +23,10 @@ export interface IPost {
  *         - description
  *         - text
  *       properties:
+ *         id:
+ *           type: string
+ *           format: ObjectId
+ *           description: The unique identifier of the post
  *         img:
  *           type: array
  *           items:
@@ -49,19 +55,29 @@ export interface IPost {
  *         comments:
  *           type: array
  *           items:
+ *             type: string
+ *             format: ObjectId
  *             description: The IDs of comments associated with the post
  *             example:
  *               - '610d08a22c076b0015f42d5d'
  *               - '610d08a22c076b0015f42d5e'
+ *          tags:
+ *            type: array
+ *            items:
+ *              type: string
+ *              description: The tags associated with the post
+ *              example:
+ *               - 'tag1'
  */
 
 export const PostSchema = new Schema<IPost>({
   img: [{ type: String, required: true }],
-  date: { type: Date, required: false, default: Date.now },
+  date: { type: Date, default: Date.now },
   title: { type: String, required: true },
   description: { type: String, required: true },
   text: { type: String, required: true },
   comments: [{ type: Schema.Types.ObjectId, ref: 'Comment' }],
+  tags: [{ type: String }],
 })
 
 export const Post = model<IPost>('Post', PostSchema)

@@ -123,34 +123,3 @@ commentRouter.delete('/:id', commentController.deleteComment)
  *         description: Internal server error
  */
 commentRouter.get('/name/:name', commentController.getCommentByName)
-
-/**
- * @openapi
- * /comment/{id}:
- *   put:
- *     tags:
- *       - Comment
- *     summary: Update a comment by id
- *     parameters:
- *       - in: path
- *         name: id
- *         required: true
- *         schema:
- *           type: string
- *     requestBody:
- *       required: true
- *       content:
- *         application/json:
- *           schema:
- *             $ref: '#/components/schemas/Comment'
- *     responses:
- *       '200':
- *         description: Updated successfully
- *       '400':
- *         description: Bad request
- *       '404':
- *         description: Comment not found
- *       '500':
- *         description: Internal server error
- */
-commentRouter.put('/:id', commentController.updateCommentById)

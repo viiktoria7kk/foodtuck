@@ -1,8 +1,8 @@
 import { Schema, Types, model } from 'mongoose'
-import { UserType } from 'src/types/User'
 
 export interface IComment {
-  user: UserType
+  id: Types.ObjectId
+  user: Types.ObjectId
   content: string
   date: Date
   postId: Types.ObjectId

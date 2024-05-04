@@ -1,8 +1,8 @@
 import { TeamMember } from '../models/TeamMember'
-import { TeamMemberType } from '../types/TeamMember'
+import { ITeamMember } from '../models/TeamMember'
 
 export class TeamMemberService {
-  public async createTeamMember(teamMember: TeamMemberType): Promise<TeamMemberType> {
+  public async createTeamMember(teamMember: ITeamMember): Promise<ITeamMember> {
     try {
       const newTeamMember = new TeamMember(teamMember)
       await newTeamMember.save()
@@ -12,7 +12,7 @@ export class TeamMemberService {
     }
   }
 
-  public async getTeamMember(): Promise<TeamMemberType[]> {
+  public async getTeamMember(): Promise<ITeamMember[]> {
     try {
       const teamMembers = await TeamMember.find()
       return teamMembers
@@ -21,7 +21,7 @@ export class TeamMemberService {
     }
   }
 
-  public async getTeamMemberById(id: string): Promise<TeamMemberType> {
+  public async getTeamMemberById(id: string): Promise<ITeamMember> {
     try {
       const teamMember = await TeamMember.findById(id)
       return teamMember
@@ -30,15 +30,16 @@ export class TeamMemberService {
     }
   }
 
-  public async deleteTeamMember(id: string): Promise<void> {
+  public async deleteTeamMember(id: string): Promise<string> {
     try {
       await TeamMember.findByIdAndDelete(id)
+      return 'Team member deleted'
     } catch (error) {
       throw error
     }
   }
 
-  public async getTeamMemberByName(name: string): Promise<TeamMemberType[]> {
+  public async getTeamMemberByName(name: string): Promise<ITeamMember[]> {
     try {
       const teamMembers = await TeamMember.find({ name: name })
       return teamMembers

@@ -118,33 +118,3 @@ cheekoutRouter.delete('/:id', cheekoutController.deleteCheekout)
  *         description: Internal server error
  */
 cheekoutRouter.get('/name/:name', cheekoutController.getCheekoutByName)
-
-/**
- * @openapi
- * /cheekout/{id}:
- *   put:
- *     summary: Update a cheekout by ID
- *     tags: [Cheekout]
- *     parameters:
- *       - in: path
- *         name: id
- *         required: true
- *         schema:
- *           type: string
- *     requestBody:
- *       required: true
- *       content:
- *         application/json:
- *           schema:
- *             $ref: '#/components/schemas/Cheekout'
- *     responses:
- *       '200':
- *         description: Cheekout updated
- *       '400':
- *         description: Bad request
- *       '404':
- *         description: Cheekout not found
- *       '500':
- *         description: Internal server error
- */
-cheekoutRouter.put('/:id', cheekoutController.updateCheekoutById)

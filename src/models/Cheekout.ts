@@ -1,7 +1,8 @@
-import { Schema, model } from 'mongoose'
+import { Schema, Types, model } from 'mongoose'
 import { Dish } from './Dish'
 
 export interface ICheekout {
+  id: Types.ObjectId
   name: string
   email: string
   dishes: Array<typeof Dish>
@@ -16,47 +17,40 @@ export interface ICheekout {
  *   schemas:
  *     Cheekout:
  *       type: object
- *       required:
- *         - name
- *         - phone
- *         - address
  *       properties:
+ *         id:
+ *           type: string
+ *           format: ObjectId
  *         name:
  *           type: string
- *           default: 'John Doe'
- *           description: The name of the customer
- *           example: 'John Doe'
  *         email:
  *           type: string
- *           description: The email of the customer
- *           example: 'example@gmail.com'
  *         dishes:
  *           type: array
  *           items:
  *             $ref: '#/components/schemas/Dish'
- *           description: The list of dishes in the cheekout
  *         phone:
  *           type: string
- *           description: The phone number of the customer
  *         address:
  *           type: string
- *           description: The address of the customer
  *         total:
  *           type: number
- *           description: The total cost of the cheekout
+ *       required:
+ *         - name
+ *         - email
+ *         - dishes
+ *         - phone
+ *         - address
+ *         - total
  */
 
 export const CheekoutSchema = new Schema<ICheekout>({
   name: { type: String, required: true },
-  email: { type: String, required: false },
-  dishes: [{ type: Schema.Types.ObjectId, ref: 'Dish' }],
+  email: { type: String, required: true },
+  dishes: [{ type: Schema.Types.ObjectId, ref: 'Dish', required: true }],
   phone: { type: String, required: true },
   address: { type: String, required: true },
-  total: { type: Number, required: false },
+  total: { type: Number, required: true },
 })
 
 export const Cheekout = model<ICheekout>('Cheekout', CheekoutSchema)
-
-
-
-

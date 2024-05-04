@@ -1,6 +1,5 @@
-export type UserType = {
+export class SignUpDto {
   name: string
   email: string
   password: string
-  avatar: string
 }

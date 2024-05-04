@@ -154,31 +154,3 @@ dishRouter.delete('/:id', dishController.deleteDish)
  *         description: Internal server error
  */
 dishRouter.get('/category/:category', dishController.getDishByCategory)
-
-
-
-// interface Comment {
-//   user: string;
-//   content: string;
-//   date: string;
-//   avatar: string;
-//   rating: string;
-// }
-
-// interface User {
-//   avatar: string;
-//   name: string;
-//   bio: string;
-//   email: string;
-//   password: string
-// }
-
-// interface Post {
-//   img: string;
-//   user: string;
-//   date: string;
-//   title: string;
-//   comments: string[];
-//   description: string;
-//   tags: string[];
-// }

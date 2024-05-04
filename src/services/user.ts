@@ -1,118 +1,80 @@
-import { Request, Response } from 'express'
-import { User } from '../models/User'
-import { UserType } from '../types/User'
+import { IUser, User } from '../models/User'
 import { generateToken } from '../utils/token/generateToken'
+import { SignUpDto } from '../dto/sign-up.dto'
+import { SignInDto } from '../dto/sign-in.dto'
 
 export class UserService {
-  public async createUser(req: Request, res: Response): Promise<Response> {
-    try {
-      const user: UserType = req.body
-      const newUser = new User(user)
-      await newUser.save()
-      return res.status(201).json(newUser)
-    } catch (error) {
-      res.status(500).json({ error: error.message })
-    }
-  }
-
-  public async getUser(req: Request, res: Response): Promise<Response> {
+  public async getUser(): Promise<IUser[]> {
     try {
       const users = await User.find()
-      return res.status(200).json(users)
+      return users.map((user) => user.toObject())
     } catch (error) {
-      res.status(500).json({ error: error.message })
+      throw error
     }
   }
 
-  public async updateUser(req: Request, res: Response): Promise<Response> {
+  public async updateUser(user: IUser): Promise<IUser> {
     try {
-      const { id } = req.params
-      const user = await User.findByIdAndUpdate({ _id: id }, req.body, { new: true })
-      return res.status(200).json(user)
+      const updatedUser = await User.findByIdAndUpdate(user.id, user, { new: true })
+      return updatedUser.toObject()
     } catch (error) {
-      res.status(500).json({ error: error.message })
+      throw error
     }
   }
 
-  public async deleteUser(req: Request, res: Response): Promise<Response> {
+  public async deleteUser(id: string): Promise<string> {
     try {
-      const { id } = req.params
-      await User.findByIdAndDelete({ _id: id })
-      return res.status(204).json()
+      await User.findByIdAndDelete(id)
+      return 'User deleted'
     } catch (error) {
-      res.status(500).json({ error: error.message })
+      throw error
     }
   }
 
-  public async getUserById(req: Request, res: Response): Promise<Response> {
+  public async getUserById(id: string): Promise<IUser> {
     try {
-      const { id } = req.params
-      const user = await User.findById({ _id: id })
-      return res.status(200).json(user)
+      const user = await User.findById(id)
+      return user.toObject()
     } catch (error) {
-      res.status(500).json({ error: error.message })
+      throw error
     }
   }
 
-  public async getUserByEmail(req: Request, res: Response): Promise<Response> {
+  public async getUserByEmail(email: string): Promise<IUser> {
     try {
-      const { email } = req.body
-      const user = await User.findOne({
-        email,
-      })
-      return res.status(200).json(user)
+      const user = await User.findOne({ email: email })
+      return user.toObject()
     } catch (error) {
-      res.status(500).json({ error: error.message })
+      throw error
     }
   }
 
-  public async loginUser(req: Request, res: Response): Promise<Response> {
+  public async signUp(user: SignUpDto): Promise<{ user: IUser; token: string }> {
     try {
-      const { email, password } = req.body
-      const user = await User.findOne({
-        email,
-      })
-      if (user && (await user.matchPassword(password))) {
-        return res.status(200).json({
-          _id: user.id,
-          name: user.name,
-          email: user.email,
-          token: generateToken(user.id),
-        })
-      } else {
-        return res.status(401).json({ message: 'Invalid email or password' })
+      const newUser = new User(user)
+      await newUser.save()
+      const token = generateToken(newUser.id.toString())
+      return { user: newUser.toObject(), token }
+    } catch (error) {
+      throw error
+    }
+  }
+
+  public async signIn(user: SignInDto): Promise<{ user: IUser; token: string }> {
+    try {
+      const { email, password } = user
+      const existingUser = await User.findOne({ email: email })
+      if (!existingUser) {
+        throw new Error('Invalid credentials')
       }
-    } catch (error) {
-      res.status(500).json({ error: error.message })
-    }
-  }
-
-  public async registerUser(req: Request, res: Response): Promise<Response> {
-    try {
-      const { name, email, password } = req.body
-      const userExists = await User.findOne({
-        email,
-      })
-      if (userExists) {
-        return res.status(400).json({ message: 'User already exists' })
+      const isMatch = await existingUser.matchPassword(password)
+      if (!isMatch) {
+        throw new Error('Invalid credentials')
       }
-      const user = await User.create({
-        name,
-        email,
-        password,
-      })
-      if (user) {
-        return res.status(201).json({
-          _id: user.id,
-          name: user.name,
-          email: user.email,
-          token: generateToken(user.id),
-        })
-      } else {
-        return res.status(400).json({ message: 'Invalid user data' })
-      }
+      const token = generateToken(existingUser.id.toString())
+      return { user: existingUser.toObject(), token }
     } catch (error) {
-      res.status(500).json({ error: error.message })
+      throw error
     }
   }
 }

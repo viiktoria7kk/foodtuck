@@ -1,8 +1,8 @@
-import { CommentType } from '../types/Comment'
 import { Comment } from '../models/Comment'
+import { IComment } from '../models/Comment'
 
 export class CommentService {
-  public async createComment(comment: CommentType): Promise<CommentType> {
+  public async createComment(comment: IComment): Promise<IComment> {
     try {
       const newComment = new Comment(comment)
       await newComment.save()
@@ -12,7 +12,7 @@ export class CommentService {
     }
   }
 
-  public async getComment(): Promise<CommentType[]> {
+  public async getComment(): Promise<IComment[]> {
     try {
       const comments = await Comment.find()
       return comments
@@ -21,7 +21,7 @@ export class CommentService {
     }
   }
 
-  public async getCommentById(id: string): Promise<CommentType> {
+  public async getCommentById(id: string): Promise<IComment> {
     try {
       const comment = await Comment.findById(id)
       return comment
@@ -30,27 +30,19 @@ export class CommentService {
     }
   }
 
-  public async deleteComment(id: string): Promise<void> {
+  public async deleteComment(id: string): Promise<string> {
     try {
       await Comment.findByIdAndDelete(id)
+      return 'Comment deleted successfully'
     } catch (error) {
       throw error
     }
   }
 
-  public async getCommentByName(name: string): Promise<CommentType[]> {
+  public async getCommentByName(name: string): Promise<IComment[]> {
     try {
       const comments = await Comment.find({ name: name })
       return comments
-    } catch (error) {
-      throw error
-    }
-  }
-
-  public async updateCommentById(id: string, comment: CommentType): Promise<CommentType> {
-    try {
-      const updatedComment = await Comment.findByIdAndUpdate(id, comment, { new: true })
-      return updatedComment
     } catch (error) {
       throw error
     }

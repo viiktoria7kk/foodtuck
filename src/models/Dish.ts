@@ -1,12 +1,13 @@
-import { Schema, model } from 'mongoose'
+import { Schema, model, Types } from 'mongoose'
 import { Categories } from '../utils/enums/categories'
 
 export interface IDish {
-  img: string
-  calories: number
-  category: string[]
+  id: Types.ObjectId
+  img?: string
+  calories?: number
+  category: Categories[]
   tags: string[]
-  rating: number 
+  rating: number
   receipe: string[]
   description: string
   title: string
@@ -72,7 +73,7 @@ export const DishSchema = new Schema<IDish>(
   {
     img: { type: String, required: false },
     calories: { type: Number, required: false },
-    category: { type: [String], enum: Object.values(Categories), required: true },
+    category: { type: [String], required: true, enum: Categories },
     tags: { type: [String], required: true },
     rating: { type: Number, required: true, min: 0, max: 5 },
     receipe: { type: [String], required: true },

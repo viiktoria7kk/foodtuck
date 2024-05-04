@@ -1,75 +1,31 @@
 import { PostService } from '../services/post'
-import { Request, Response } from 'express'
 import { validatePost } from '../utils/validation/validation'
+import { IPost } from 'src/models/Post'
 
 export class PostController {
-  public async createPost(req: Request, res: Response): Promise<void> {
-    try {
-      const { error } = validatePost(req.body)
-      if (error) {
-        res.status(400).json({ error: error.details[0].message })
-        return
-      }
-      const postService = new PostService()
-      const newPost = await postService.createPost(req, res)
-      res.status(201).json(newPost)
-    } catch (error) {
-      if (!res.headersSent) {
-        res.status(500).json({ error: error.message })
-      }
-    }
+  constructor(private postService: PostService = new PostService()) {}
+
+  public async createPost(post: IPost): Promise<IPost> {
+    const { error } = validatePost(post)
+    if (error) throw new Error(error.details[0].message)
+    return await this.postService.createPost(post)
   }
 
-  public async getPost(req: Request, res: Response): Promise<void> {
-    try {
-      const postService = new PostService()
-      const posts = await postService.getPost(req, res)
-      res.status(200).json(posts)
-    } catch (error) {
-      if (!res.headersSent) {
-        res.status(500).json({ error: error.message })
-      }
-    }
+  public async getPost(): Promise<IPost[]> {
+    return await this.postService.getPost()
   }
 
-  public async updatePost(req: Request, res: Response): Promise<void> {
-    try {
-      const { error } = validatePost(req.body)
-      if (error) {
-        res.status(400).json({ error: error.details[0].message })
-        return
-      }
-      const postService = new PostService()
-      const updatedPost = await postService.updatePost(req, res)
-      res.status(200).json(updatedPost)
-    } catch (error) {
-      if (!res.headersSent) {
-        res.status(500).json({ error: error.message })
-      }
-    }
+  public async updatePost(post: IPost): Promise<IPost> {
+    const { error } = validatePost(post)
+    if (error) throw new Error(error.details[0].message)
+    return await this.postService.updatePost(post)
   }
 
-  public async deletePost(req: Request, res: Response): Promise<void> {
-    try {
-      const postService = new PostService()
-      await postService.deletePost(req, res)
-      res.status(204).json()
-    } catch (error) {
-      if (!res.headersSent) {
-        res.status(500).json({ error: error.message })
-      }
-    }
+  public async deletePost(id: string): Promise<string> {
+    return await this.postService.deletePost(id)
   }
 
-  public async getPostById(req: Request, res: Response): Promise<void> {
-    try {
-      const postService = new PostService()
-      const post = await postService.getPostById(req, res)
-      res.status(200).json(post)
-    } catch (error) {
-      if (!res.headersSent) {
-        res.status(500).json({ error: error.message })
-      }
-    }
+  public async getPostById(id: string): Promise<IPost> {
+    return await this.postService.getPostById(id)
   }
 }

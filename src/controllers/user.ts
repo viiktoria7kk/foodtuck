@@ -1,121 +1,43 @@
-import { Request, Response } from 'express'
+import { IUser } from '../models/User'
+import { SignUpDto } from '../dto/sign-up.dto'
+import { SignInDto } from '../dto/sign-in.dto'
 import { UserService } from '../services/user'
-import { validateUser } from '../utils/validation/validation'
+import { validateUser, validateSignUp, validateSignIn } from '../utils/validation/validation'
 
 export class UserController {
-  public async createUser(req: Request, res: Response): Promise<void> {
-    try {
-      const { error } = validateUser(req.body)
-      if (error) {
-        res.status(400).json({ error: error.details[0].message })
-        return
-      }
-      const userService = new UserService()
-      const newUser = await userService.createUser(req, res)
-      res.status(201).json(newUser)
-    } catch (error) {
-      if (!res.headersSent) {
-        res.status(500).json({ error: error.message })
-      }
-    }
+  constructor(private userService: UserService = new UserService()) {}
+
+  async getUser(): Promise<IUser[]> {
+    return await this.userService.getUser()
   }
 
-  public async getUser(req: Request, res: Response): Promise<void> {
-    try {
-      const userService = new UserService()
-      const users = await userService.getUser(req, res)
-      res.status(200).json(users)
-    } catch (error) {
-      if (!res.headersSent) {
-        res.status(500).json({ error: error.message })
-      }
-    }
+  async updateUser(user: IUser): Promise<IUser> {
+    const { error } = validateUser(user)
+    if (error) throw new Error(error.details[0].message)
+    return await this.userService.updateUser(user)
   }
 
-  public async updateUser(req: Request, res: Response): Promise<void> {
-    try {
-      const { error } = validateUser(req.body)
-      if (error) {
-        res.status(400).json({ error: error.details[0].message })
-        return
-      }
-      const userService = new UserService()
-      const updatedUser = await userService.updateUser(req, res)
-      res.status(200).json(updatedUser)
-    } catch (error) {
-      if (!res.headersSent) {
-        res.status(500).json({ error: error.message })
-      }
-    }
+  async deleteUser(id: string): Promise<string> {
+    return await this.userService.deleteUser(id)
   }
 
-  public async deleteUser(req: Request, res: Response): Promise<void> {
-    try {
-      const userService = new UserService()
-      await userService.deleteUser(req, res)
-      res.status(204).json()
-    } catch (error) {
-      if (!res.headersSent) {
-        res.status(500).json({ error: error.message })
-      }
-    }
+  async getUserById(id: string): Promise<IUser> {
+    return await this.userService.getUserById(id)
   }
 
-  public async getUserById(req: Request, res: Response): Promise<void> {
-    try {
-      const userService = new UserService()
-      const user = await userService.getUserById(req, res)
-      res.status(200).json(user)
-    } catch (error) {
-      if (!res.headersSent) {
-        res.status(500).json({ error: error.message })
-      }
-    }
+  async getUserByEmail(email: string): Promise<IUser> {
+    return await this.userService.getUserByEmail(email)
   }
 
-  public async getUserByEmail(req: Request, res: Response): Promise<void> {
-    try {
-      const userService = new UserService()
-      const user = await userService.getUserByEmail(req, res)
-      res.status(200).json(user)
-    } catch (error) {
-      if (!res.headersSent) {
-        res.status(500).json({ error: error.message })
-      }
-    }
+  async signUp(user: SignUpDto): Promise<{ user: IUser; token: string }> {
+    const { error } = validateSignUp(user)
+    if (error) throw new Error(error.details[0].message)
+    return await this.userService.signUp(user)
   }
 
-  public async loginUser(req: Request, res: Response): Promise<void> {
-    try {
-      const { error } = validateUser(req.body)
-      if (error) {
-        res.status(400).json({ error: error.details[0].message })
-        return
-      }
-      const userService = new UserService()
-      const user = await userService.loginUser(req, res)
-      res.status(200).json(user)
-    } catch (error) {
-      if (!res.headersSent) {
-        res.status(500).json({ error: error.message })
-      }
-    }
-  }
-
-  public async registerUser(req: Request, res: Response): Promise<void> {
-    try {
-      const { error } = validateUser(req.body)
-      if (error) {
-        res.status(400).json({ error: error.details[0].message })
-        return
-      }
-      const userService = new UserService()
-      const user = await userService.registerUser(req, res)
-      res.status(200).json(user)
-    } catch (error) {
-      if (!res.headersSent) {
-        res.status(500).json({ error: error.message })
-      }
-    }
+  async signIn(user: SignInDto): Promise<{ user: IUser; token: string }> {
+    const { error } = validateSignIn(user)
+    if (error) throw new Error(error.details[0].message)
+    return await this.userService.signIn(user)
   }
 }
