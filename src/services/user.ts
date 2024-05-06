@@ -1,7 +1,7 @@
 import { IUser, User } from '../models/User'
 import { generateToken } from '../utils/token/generateToken'
-import { SignUpDto } from '../dto/sign-up.dto'
-import { SignInDto } from '../dto/sign-in.dto'
+import { SignUpDto } from '../models/sign-up.dto'
+import { SignInDto } from '../models/sign-in.dto'
 
 export class UserService {
   public async getUser(): Promise<IUser[]> {

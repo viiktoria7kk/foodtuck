@@ -1,13 +1,14 @@
 import { Schema, Types, model } from 'mongoose'
-import { Dish } from './Dish'
 
 export interface ICheekout {
   id: Types.ObjectId
   name: string
   email: string
-  dishes: Array<typeof Dish>
+  dishesId: Types.ObjectId[]
   phone: string
   address: string
+  city: string 
+  country: string
   total: number
 }
 
@@ -25,31 +26,40 @@ export interface ICheekout {
  *           type: string
  *         email:
  *           type: string
- *         dishes:
+ *         dishesId:
  *           type: array
  *           items:
- *             $ref: '#/components/schemas/Dish'
+ *             type: string
+ *             format: ObjectId
  *         phone:
  *           type: string
  *         address:
+ *           type: string
+ *         city:
+ *           type: string
+ *         country:
  *           type: string
  *         total:
  *           type: number
  *       required:
  *         - name
  *         - email
- *         - dishes
+ *         - dishesId
  *         - phone
  *         - address
+ *         - city
+ *         - country
  *         - total
  */
 
 export const CheekoutSchema = new Schema<ICheekout>({
   name: { type: String, required: true },
   email: { type: String, required: true },
-  dishes: [{ type: Schema.Types.ObjectId, ref: 'Dish', required: true }],
+  dishesId: { type: [Types.ObjectId], required: true },
   phone: { type: String, required: true },
   address: { type: String, required: true },
+  city: { type: String, required: true },
+  country: { type: String, required: true },
   total: { type: Number, required: true },
 })
 

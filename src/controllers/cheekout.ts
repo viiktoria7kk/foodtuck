@@ -1,11 +1,12 @@
 import { CheekoutService } from '../services/cheekout'
 import { ICheekout } from '../models/Cheekout'
 import { validateCheekout } from '../utils/validation/validation'
+import { CreateCheekoutDto } from '../models/create.cheekout.dto'
 
 export class CheekoutController {
   private cheekoutService = new CheekoutService()
 
-  public async createCheekout(cheekout: ICheekout): Promise<ICheekout> {
+  public async createCheekout(cheekout: CreateCheekoutDto): Promise<ICheekout> {
     const { error } = validateCheekout(cheekout)
     if (error) throw new Error(error.details[0].message)
     return await this.cheekoutService.createCheekout(cheekout)

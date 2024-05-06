@@ -13,7 +13,7 @@ const cheekoutController = new CheekoutController()
 
 /**
  * @openapi
- * /cheekout:
+ * /checkout:
  *   post:
  *     summary: Create a new cheekout
  *     tags: [Cheekout]
@@ -22,10 +22,14 @@ const cheekoutController = new CheekoutController()
  *       content:
  *         application/json:
  *           schema:
- *             $ref: '#/components/schemas/Cheekout'
+ *             $ref: '#/components/schemas/CreateCheekoutDto'
  *     responses:
- *       '201':
- *         description: Created
+ *       '200':
+ *         description: A cheekout object
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/Cheekout'
  *       '400':
  *         description: Bad request
  *       '500':
@@ -42,6 +46,12 @@ cheekoutRouter.post('/', cheekoutController.createCheekout)
  *     responses:
  *       '200':
  *         description: A list of cheekouts
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: array
+ *               items:
+ *                 $ref: '#/components/schemas/Cheekout'
  *       '400':
  *         description: Bad request
  *       '500':
@@ -64,6 +74,10 @@ cheekoutRouter.get('/', cheekoutController.getCheekout)
  *     responses:
  *       '200':
  *         description: A cheekout object
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/Cheekout'
  *       '400':
  *         description: Bad request
  *       '404':
@@ -109,7 +123,13 @@ cheekoutRouter.delete('/:id', cheekoutController.deleteCheekout)
  *           type: string
  *     responses:
  *       '200':
- *         description: A cheekout object
+ *         description: A list of cheekouts
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: array
+ *               items:
+ *                 $ref: '#/components/schemas/Cheekout'
  *       '400':
  *         description: Bad request
  *       '404':

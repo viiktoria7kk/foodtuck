@@ -1,6 +1,6 @@
 import { IUser } from '../models/User'
-import { SignUpDto } from '../dto/sign-up.dto'
-import { SignInDto } from '../dto/sign-in.dto'
+import { SignUpDto } from '../models/sign-up.dto'
+import { SignInDto } from '../models/sign-in.dto'
 import { UserService } from '../services/user'
 import { validateUser, validateSignUp, validateSignIn } from '../utils/validation/validation'
 

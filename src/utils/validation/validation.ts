@@ -6,8 +6,9 @@ import { IDish } from 'src/models/Dish'
 import { ICheekout } from 'src/models/Cheekout'
 import { ITeamMember } from 'src/models/TeamMember'
 import { IPost } from 'src/models/Post'
-import { SignUpDto } from 'src/dto/sign-up.dto'
-import { SignInDto } from 'src/dto/sign-in.dto'
+import { SignUpDto } from 'src/models/sign-up.dto'
+import { SignInDto } from 'src/models/sign-in.dto'
+import { CreateCheekoutDto } from 'src/models/create.cheekout.dto'
 
 const userSchema = Joi.object({
   name: Joi.string().required(),
@@ -68,14 +69,17 @@ export const validateDish = (dish: IDish) => {
   return dishSchema.validate(dish)
 }
 
-export const validateCheekout = (cheekout: ICheekout) => {
+export const validateCheekout = (cheekout: CreateCheekoutDto) => {
   const schema = Joi.object({
-    name: Joi.string().required(),
+    firstName: Joi.string().required(),
+    lastName: Joi.string().required(),
     email: Joi.string().required(),
-    dishes: Joi.object(dishSchema).required(),
     phone: Joi.string().required(),
     address: Joi.string().required(),
+    city: Joi.string().required(),
+    country: Joi.string().required(),
     total: Joi.number().required(),
+    dishesId: Joi.array().items(Joi.string()).required(),
   })
 
   return schema.validate(cheekout)

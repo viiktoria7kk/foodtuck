@@ -1,8 +1,9 @@
+import { CreateCheekoutDto } from '../models/create.cheekout.dto'
 import { Cheekout } from '../models/Cheekout'
 import { ICheekout } from '../models/Cheekout'
 
 export class CheekoutService {
-  public async createCheekout(cheekout: ICheekout): Promise<ICheekout> {
+  public async createCheekout(cheekout: CreateCheekoutDto): Promise<ICheekout> {
     try {
       const newCheekout = new Cheekout(cheekout)
       await newCheekout.save()

@@ -58,16 +58,16 @@ export interface IPost {
  *             type: string
  *             format: ObjectId
  *             description: The IDs of comments associated with the post
- *             example:
- *               - '610d08a22c076b0015f42d5d'
- *               - '610d08a22c076b0015f42d5e'
- *          tags:
- *            type: array
- *            items:
- *              type: string
- *              description: The tags associated with the post
- *              example:
- *               - 'tag1'
+ *           example:
+ *             - '610d08a22c076b0015f42d5d'
+ *             - '610d08a22c076b0015f42d5e'
+ *         tags:
+ *           type: array
+ *           items:
+ *             type: string
+ *             description: The tags associated with the post
+ *           example:
+ *             - 'tag1'
  */
 
 export const PostSchema = new Schema<IPost>({
