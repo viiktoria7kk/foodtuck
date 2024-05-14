@@ -13,7 +13,7 @@ const dishController = new DishController()
 
 /**
  * @openapi
- * /dish:
+ * /dishes:
  *   post:
  *     tags:
  *       - Dish
@@ -27,6 +27,10 @@ const dishController = new DishController()
  *     responses:
  *       '201':
  *         description: Created
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/Dish'
  *       '400':
  *         description: Bad request
  *       '500':
@@ -36,7 +40,7 @@ dishRouter.post('/', dishController.createDish)
 
 /**
  * @openapi
- * /dish:
+ * /dishes:
  *   get:
  *     tags:
  *       - Dish
@@ -44,6 +48,12 @@ dishRouter.post('/', dishController.createDish)
  *     responses:
  *       '200':
  *         description: A list of dishes
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: array
+ *               items:
+ *                 $ref: '#/components/schemas/Dish'
  *       '400':
  *         description: Bad request
  *       '500':
@@ -53,7 +63,7 @@ dishRouter.get('/', dishController.getDish)
 
 /**
  * @openapi
- * /dish/{id}:
+ * /dishes/{id}:
  *   get:
  *     tags:
  *       - Dish
@@ -67,6 +77,10 @@ dishRouter.get('/', dishController.getDish)
  *     responses:
  *       '200':
  *         description: A dish object
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/Dish'
  *       '400':
  *         description: Bad request
  *       '404':
@@ -78,7 +92,7 @@ dishRouter.get('/:id', dishController.getDishById)
 
 /**
  * @openapi
- * /dish/{id}:
+ * /dishes/{id}:
  *   put:
  *     tags:
  *       - Dish
@@ -98,6 +112,10 @@ dishRouter.get('/:id', dishController.getDishById)
  *     responses:
  *       '200':
  *         description: Updated successfully
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/Dish'
  *       '400':
  *         description: Bad request
  *       '404':
@@ -109,7 +127,7 @@ dishRouter.put('/:id', dishController.updateDish)
 
 /**
  * @openapi
- * /dish/{id}:
+ * /dishes/{id}:
  *   delete:
  *     tags:
  *       - Dish
@@ -129,28 +147,3 @@ dishRouter.put('/:id', dishController.updateDish)
  *         description: Internal server error
  */
 dishRouter.delete('/:id', dishController.deleteDish)
-
-/**
- * @openapi
- * /dish/category/{category}:
- *   get:
- *     tags:
- *       - Dish
- *     summary: Get dishes by category
- *     parameters:
- *       - in: path
- *         name: category
- *         required: true
- *         schema:
- *           type: string
- *     responses:
- *       '200':
- *         description: A list of dishes
- *       '400':
- *         description: Bad request
- *       '404':
- *         description: No dishes found for the category
- *       '500':
- *         description: Internal server error
- */
-dishRouter.get('/category/:category', dishController.getDishByCategory)

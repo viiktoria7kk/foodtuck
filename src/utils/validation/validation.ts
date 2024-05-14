@@ -38,12 +38,12 @@ export const validateComment = (comment: CreateCommentDto) => {
 }
 
 const dishSchema = Joi.object({
-  img: Joi.string().required(),
-  calories: Joi.number(),
+  img: Joi.string(),
+  calories: Joi.number().optional(),
   category: Joi.array()
     .items(Joi.string().valid(...Object.values(Categories)))
     .required(),
-  tags: Joi.array().items(Joi.string()).required(),
+  tags: Joi.array().items(Joi.string()),
   rating: Joi.number().min(0).max(5).required(),
   receipe: Joi.array().items(Joi.string()).required(),
   description: Joi.string().required(),

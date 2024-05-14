@@ -47,13 +47,4 @@ export class DishService {
       throw error
     }
   }
-
-  public async getDishesByCategory(category: Categories): Promise<IDish[]> {
-    try {
-      const dishes = await Dish.find({ category: category })
-      return dishes
-    } catch (error) {
-      throw error
-    }
-  }
 }
