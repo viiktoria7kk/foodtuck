@@ -2,6 +2,7 @@ import { Request, Response } from 'express'
 import { SignUpDto } from '../models/sign-up.dto'
 import { SignInDto } from '../models/sign-in.dto'
 import { UserService } from '../services/user'
+import { validateSignUp, validateSignIn } from '../utils/validation/validation' // Import validation functions
 
 export class UserController {
   private userService: UserService
@@ -62,6 +63,11 @@ export class UserController {
   signUp = async (req: Request, res: Response): Promise<void> => {
     try {
       const user: SignUpDto = req.body
+      const { error } = validateSignUp(user)
+      if (error) {
+        res.status(400).json({ message: error.details[0].message })
+        return
+      }
       const { token, refreshToken } = await this.userService.signUp(user)
       res.status(200).json({ token, refreshToken })
     } catch (error) {
@@ -72,6 +78,11 @@ export class UserController {
   signIn = async (req: Request, res: Response): Promise<void> => {
     try {
       const user: SignInDto = req.body
+      const { error } = validateSignIn(user)
+      if (error) {
+        res.status(400).json({ message: error.details[0].message })
+        return
+      }
       const { token, refreshToken } = await this.userService.signIn(user)
       res.status(200).json({ token, refreshToken })
     } catch (error) {

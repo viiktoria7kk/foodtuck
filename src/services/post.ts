@@ -14,7 +14,7 @@ export class PostService {
     }
   }
 
-  public async getPost(): Promise<IPost[]> {
+  public async getPosts(): Promise<IPost[]> {
     try {
       const posts = await Post.find()
       return posts

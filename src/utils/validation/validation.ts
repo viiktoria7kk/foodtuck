@@ -1,24 +1,12 @@
 import Joi from 'joi'
 import { IDish } from '../../models/Dish'
 import { ITeamMember } from '../../models/TeamMember'
-import { IUser } from '../../models/User'
+import { SignInDto } from '../../models/sign-in.dto'
+import { SignUpDto } from '../../models/sign-up.dto'
 import { CreateCheekoutDto } from '../../models/create.cheekout.dto'
 import { CreateCommentDto } from '../../models/create.comment.dto'
 import { CreatePostDto } from '../../models/create.post.dto'
-import { SignInDto } from '../../models/sign-in.dto'
-import { SignUpDto } from '../../models/sign-up.dto'
 import { Categories } from '../enums/categories'
-
-const userSchema = Joi.object({
-  name: Joi.string().required(),
-  email: Joi.string().required(),
-  password: Joi.string().required(),
-  avatar: Joi.string(),
-})
-
-export const validateUser = (user: IUser) => {
-  return userSchema.validate(user)
-}
 
 export const validateSignUp = (user: SignUpDto) => {
   const schema = Joi.object({
@@ -98,7 +86,7 @@ export const validatePost = (post: CreatePostDto) => {
     img: Joi.array().items(Joi.string()),
     title: Joi.string().required(),
     description: Joi.string().required(),
-    text: Joi.string().required(),
+    text: Joi.string(),
     comments: Joi.array().items(Joi.string()),
     tags: Joi.array().items(Joi.string()),
   })

@@ -7,15 +7,16 @@ const postController = new PostController()
 /**
  * @openapi
  * tags:
- *   name: Post
+ *   name: Posts
  *   description: Operations related to posts
  */
+
 /**
  * @openapi
- * /post:
+ * /posts:
  *   post:
  *     tags:
- *       - Post
+ *       - Posts
  *     summary: Create a new post
  *     requestBody:
  *       required: true
@@ -39,10 +40,10 @@ postRouter.post('/', postController.createPost)
 
 /**
  * @openapi
- * /post:
+ * /posts:
  *   get:
  *     tags:
- *       - Post
+ *       - Posts
  *     summary: Get all posts
  *     responses:
  *       '200':
@@ -53,19 +54,17 @@ postRouter.post('/', postController.createPost)
  *               type: array
  *               items:
  *                 $ref: '#/components/schemas/Post'
- *       '400':
- *         description: Bad request
  *       '500':
  *         description: Internal server error
  */
-postRouter.get('/', postController.getPost)
+postRouter.get('/', postController.getPosts)
 
 /**
  * @openapi
- * /post/{id}:
+ * /posts/{id}:
  *   get:
  *     tags:
- *       - Post
+ *       - Posts
  *     summary: Get a post by id
  *     parameters:
  *       - in: path
@@ -91,10 +90,10 @@ postRouter.get('/:id', postController.getPostById)
 
 /**
  * @openapi
- * /post/{id}:
+ * /posts/{id}:
  *   delete:
  *     tags:
- *       - Post
+ *       - Posts
  *     summary: Delete a post by id
  *     parameters:
  *       - in: path
