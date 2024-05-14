@@ -13,7 +13,7 @@ const cheekoutController = new CheekoutController()
 
 /**
  * @openapi
- * /checkout:
+ * /cheekout:
  *   post:
  *     summary: Create a new cheekout
  *     tags: [Cheekout]
@@ -24,7 +24,7 @@ const cheekoutController = new CheekoutController()
  *           schema:
  *             $ref: '#/components/schemas/CreateCheekoutDto'
  *     responses:
- *       '200':
+ *       '201':
  *         description: A cheekout object
  *         content:
  *           application/json:
