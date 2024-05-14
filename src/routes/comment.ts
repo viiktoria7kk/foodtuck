@@ -17,7 +17,7 @@ const commentController = new CommentController()
  *   post:
  *     tags:
  *       - Comment
- *     summary: Create a new comments
+ *     summary: Create a new comment
  *     requestBody:
  *       required: true
  *       content:
@@ -59,7 +59,7 @@ commentRouter.post('/', commentController.createComment)
  *       '500':
  *         description: Internal server error
  */
-commentRouter.get('/', commentController.getComment)
+commentRouter.get('/', commentController.getComments)
 
 /**
  * @openapi
@@ -67,7 +67,7 @@ commentRouter.get('/', commentController.getComment)
  *   get:
  *     tags:
  *       - Comment
- *     summary: Get a comments by id
+ *     summary: Get a comment by id
  *     parameters:
  *       - in: path
  *         name: id
@@ -76,7 +76,7 @@ commentRouter.get('/', commentController.getComment)
  *           type: string
  *     responses:
  *       '200':
- *         description: A comments object
+ *         description: A comment object
  *         content:
  *           application/json:
  *             schema:
@@ -96,7 +96,7 @@ commentRouter.get('/:id', commentController.getCommentById)
  *   delete:
  *     tags:
  *       - Comment
- *     summary: Delete a comments by id
+ *     summary: Delete a comment by id
  *     parameters:
  *       - in: path
  *         name: id

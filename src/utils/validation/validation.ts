@@ -37,6 +37,7 @@ export const validateComment = (comment: CreateCommentDto) => {
   return schema.validate(comment)
 }
 
+
 const dishSchema = Joi.object({
   img: Joi.string(),
   calories: Joi.number().optional(),

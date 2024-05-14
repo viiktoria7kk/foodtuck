@@ -1,30 +1,61 @@
+import { Request, Response } from 'express'
 import { CommentService } from '../services/comment'
-import { IComment } from '../models/Comment'
 import { validateComment } from '../utils/validation/validation'
 import { CreateCommentDto } from '../models/create.comment.dto'
+import { IComment } from '../models/Comment'
 
 export class CommentController {
-  private commentService: CommentService = new CommentService()
+  private commentService: CommentService
 
-  public async createComment(comment: CreateCommentDto): Promise<IComment> {
+  constructor() {
+    this.commentService = new CommentService()
+  }
+
+  public createComment = async (req: Request, res: Response): Promise<void> => {
     try {
+      const comment: CreateCommentDto = req.body
       const { error } = validateComment(comment)
-      if (error) throw new Error(error.message)
-      return await this.commentService.createComment(comment)
+      if (error) {
+        res.status(400).json({ message: error.details[0].message })
+        return
+      }
+      const createdComment = await this.commentService.createComment(comment)
+      res.status(201).json(createdComment)
     } catch (error) {
-      throw error
+      res.status(500).json({ message: error.message })
     }
   }
 
-  public async getComment(): Promise<IComment[]> {
-    return await this.commentService.getComment()
+  public getComments = async (req: Request, res: Response): Promise<void> => {
+    try {
+      const comments = await this.commentService.getComments()
+      res.status(200).json(comments)
+    } catch (error) {
+      res.status(500).json({ message: error.message })
+    }
   }
 
-  public async getCommentById(id: string): Promise<IComment> {
-    return await this.commentService.getCommentById(id)
+  public deleteComment = async (req: Request, res: Response): Promise<void> => {
+    try {
+      const id: string = req.params.id
+      await this.commentService.deleteComment(id)
+      res.status(200).json({ message: 'Comment deleted successfully' })
+    } catch (error) {
+      res.status(500).json({ message: error.message })
+    }
   }
 
-  public async deleteComment(id: string): Promise<string> {
-    return await this.commentService.deleteComment(id)
+  public getCommentById = async (req: Request, res: Response): Promise<void> => {
+    try {
+      const id: string = req.params.id
+      const comment = await this.commentService.getCommentById(id)
+      if (!comment) {
+        res.status(404).json({ message: 'Comment not found' })
+      } else {
+        res.status(200).json(comment)
+      }
+    } catch (error) {
+      res.status(500).json({ message: error.message })
+    }
   }
 }

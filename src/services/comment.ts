@@ -16,7 +16,7 @@ export class CommentService {
     }
   }
 
-  public async getComment(): Promise<IComment[]> {
+  public async getComments(): Promise<IComment[]> {
     try {
       const comments = await Comment.find()
       return comments
