@@ -27,10 +27,14 @@ const teamMemberController = new TeamMemberController()
  *     responses:
  *       '201':
  *         description: Created
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/TeamMember'
  *       '400':
- *         description: Bad request
+ *         description: Bad request. Invalid data format.
  *       '500':
- *         description: Internal server error
+ *         description: Internal server error. Failed to create a new Team Member.
  */
 teamMembersRouter.post('/', teamMemberController.createTeamMember)
 
@@ -44,10 +48,14 @@ teamMembersRouter.post('/', teamMemberController.createTeamMember)
  *     responses:
  *       '200':
  *         description: A list of team members
- *       '400':
- *         description: Bad request
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: array
+ *               items:
+ *                 $ref: '#/components/schemas/TeamMember'
  *       '500':
- *         description: Internal server error
+ *         description: Internal server error. Failed to retrieve team members.
  */
 teamMembersRouter.get('/', teamMemberController.getTeamMember)
 
@@ -67,12 +75,14 @@ teamMembersRouter.get('/', teamMemberController.getTeamMember)
  *     responses:
  *       '200':
  *         description: A team member object
- *       '400':
- *         description: Bad request
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/TeamMember'
  *       '404':
- *         description: Team member not found
+ *         description: Team member not found. The specified team member ID does not exist.
  *       '500':
- *         description: Internal server error
+ *         description: Internal server error. Failed to retrieve the team member by ID.
  */
 teamMembersRouter.get('/:id', teamMemberController.getTeamMemberById)
 
@@ -93,33 +103,8 @@ teamMembersRouter.get('/:id', teamMemberController.getTeamMemberById)
  *       '204':
  *         description: Team member deleted
  *       '404':
- *         description: Team member not found
+ *         description: Team member not found. The specified team member ID does not exist.
  *       '500':
- *         description: Internal server error
+ *         description: Internal server error. Failed to delete the team member by ID.
  */
 teamMembersRouter.delete('/:id', teamMemberController.deleteTeamMember)
-
-/**
- * @openapi
- * /team-members/name/{name}:
- *   get:
- *     tags:
- *       - TeamMembers
- *     summary: Get a team member by name
- *     parameters:
- *       - in: path
- *         name: name
- *         required: true
- *         schema:
- *           type: string
- *     responses:
- *       '200':
- *         description: A team member object
- *       '400':
- *         description: Bad request
- *       '404':
- *         description: Team member not found
- *       '500':
- *         description: Internal server error
- */
-teamMembersRouter.get('/name/:name', teamMemberController.getTeamMemberByName)

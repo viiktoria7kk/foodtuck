@@ -38,13 +38,4 @@ export class TeamMemberService {
       throw error
     }
   }
-
-  public async getTeamMemberByName(name: string): Promise<ITeamMember[]> {
-    try {
-      const teamMembers = await TeamMember.find({ name: name })
-      return teamMembers
-    } catch (error) {
-      throw error
-    }
-  }
 }
