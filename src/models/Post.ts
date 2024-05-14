@@ -71,9 +71,9 @@ export interface IPost {
  */
 
 export const PostSchema = new Schema<IPost>({
-  img: [{ type: String, required: true }],
+  img: [{ type: String, required: false }],
   date: { type: Date, default: Date.now },
-  title: { type: String, required: true },
+  title: { type: String, required: false },
   description: { type: String, required: true },
   text: { type: String, required: true },
   comments: [{ type: Schema.Types.ObjectId, ref: 'Comment' }],

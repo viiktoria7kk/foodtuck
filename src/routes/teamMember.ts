@@ -1,22 +1,22 @@
 import { Router } from 'express'
 import { TeamMemberController } from '../controllers/teamMember'
 
-export const teamMemberRouter = Router()
+export const teamMembersRouter = Router()
 const teamMemberController = new TeamMemberController()
 
 /**
  * @openapi
  * tags:
- *   name: TeamMember
- *   description: Operations related to Team Member
+ *   name: TeamMembers
+ *   description: Operations related to Team Members
  */
 
 /**
  * @openapi
- * /team-member:
+ * /team-members:
  *   post:
  *     tags:
- *       - TeamMember
+ *       - TeamMembers
  *     summary: Create a new Team Member
  *     requestBody:
  *       required: true
@@ -32,14 +32,14 @@ const teamMemberController = new TeamMemberController()
  *       '500':
  *         description: Internal server error
  */
-teamMemberRouter.post('/', teamMemberController.createTeamMember)
+teamMembersRouter.post('/', teamMemberController.createTeamMember)
 
 /**
  * @openapi
- * /team-member:
+ * /team-members:
  *   get:
  *     tags:
- *       - TeamMember
+ *       - TeamMembers
  *     summary: Get all team members
  *     responses:
  *       '200':
@@ -49,14 +49,14 @@ teamMemberRouter.post('/', teamMemberController.createTeamMember)
  *       '500':
  *         description: Internal server error
  */
-teamMemberRouter.get('/', teamMemberController.getTeamMember)
+teamMembersRouter.get('/', teamMemberController.getTeamMember)
 
 /**
  * @openapi
- * /team-member/{id}:
+ * /team-members/{id}:
  *   get:
  *     tags:
- *       - TeamMember
+ *       - TeamMembers
  *     summary: Get a team member by id
  *     parameters:
  *       - in: path
@@ -74,14 +74,14 @@ teamMemberRouter.get('/', teamMemberController.getTeamMember)
  *       '500':
  *         description: Internal server error
  */
-teamMemberRouter.get('/:id', teamMemberController.getTeamMemberById)
+teamMembersRouter.get('/:id', teamMemberController.getTeamMemberById)
 
 /**
  * @openapi
- * /team-member/{id}:
+ * /team-members/{id}:
  *   delete:
  *     tags:
- *       - TeamMember
+ *       - TeamMembers
  *     summary: Delete a team member by id
  *     parameters:
  *       - in: path
@@ -97,14 +97,14 @@ teamMemberRouter.get('/:id', teamMemberController.getTeamMemberById)
  *       '500':
  *         description: Internal server error
  */
-teamMemberRouter.delete('/:id', teamMemberController.deleteTeamMember)
+teamMembersRouter.delete('/:id', teamMemberController.deleteTeamMember)
 
 /**
  * @openapi
- * /team-member/name/{name}:
+ * /team-members/name/{name}:
  *   get:
  *     tags:
- *       - TeamMember
+ *       - TeamMembers
  *     summary: Get a team member by name
  *     parameters:
  *       - in: path
@@ -122,4 +122,4 @@ teamMemberRouter.delete('/:id', teamMemberController.deleteTeamMember)
  *       '500':
  *         description: Internal server error
  */
-teamMemberRouter.get('/name/:name', teamMemberController.getTeamMemberByName)
+teamMembersRouter.get('/name/:name', teamMemberController.getTeamMemberByName)

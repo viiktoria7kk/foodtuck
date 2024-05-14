@@ -10,7 +10,6 @@ const postController = new PostController()
  *   name: Post
  *   description: Operations related to posts
  */
-
 /**
  * @openapi
  * /post:
@@ -23,10 +22,14 @@ const postController = new PostController()
  *       content:
  *         application/json:
  *           schema:
- *             $ref: '#/components/schemas/Post'
+ *             $ref: '#/components/schemas/CreatePostDto'
  *     responses:
  *       '201':
  *         description: Created
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/Post'
  *       '400':
  *         description: Bad request
  *       '500':
@@ -44,6 +47,12 @@ postRouter.post('/', postController.createPost)
  *     responses:
  *       '200':
  *         description: A list of posts
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: array
+ *               items:
+ *                 $ref: '#/components/schemas/Post'
  *       '400':
  *         description: Bad request
  *       '500':
@@ -67,6 +76,10 @@ postRouter.get('/', postController.getPost)
  *     responses:
  *       '200':
  *         description: A post object
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/Post'
  *       '400':
  *         description: Bad request
  *       '404':
@@ -75,37 +88,6 @@ postRouter.get('/', postController.getPost)
  *         description: Internal server error
  */
 postRouter.get('/:id', postController.getPostById)
-
-/**
- * @openapi
- * /post/{id}:
- *   put:
- *     tags:
- *       - Post
- *     summary: Update a post by id
- *     parameters:
- *       - in: path
- *         name: id
- *         required: true
- *         schema:
- *           type: string
- *     requestBody:
- *       required: true
- *       content:
- *         application/json:
- *           schema:
- *             $ref: '#/components/schemas/Post'
- *     responses:
- *       '200':
- *         description: Updated successfully
- *       '400':
- *         description: Bad request
- *       '404':
- *         description: Post not found
- *       '500':
- *         description: Internal server error
- */
-postRouter.put('/:id', postController.updatePost)
 
 /**
  * @openapi

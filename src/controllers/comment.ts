@@ -1,14 +1,19 @@
 import { CommentService } from '../services/comment'
 import { IComment } from '../models/Comment'
 import { validateComment } from '../utils/validation/validation'
+import { CreateCommentDto } from '../models/create.comment.dto'
 
 export class CommentController {
   private commentService: CommentService = new CommentService()
 
-  public async createComment(comment: IComment): Promise<IComment> {
-    const { error } = validateComment(comment)
-    if (error) throw new Error(error.details[0].message)
-    return await this.commentService.createComment(comment)
+  public async createComment(comment: CreateCommentDto): Promise<IComment> {
+    try {
+      const { error } = validateComment(comment)
+      if (error) throw new Error(error.message)
+      return await this.commentService.createComment(comment)
+    } catch (error) {
+      throw error
+    }
   }
 
   public async getComment(): Promise<IComment[]> {
@@ -21,9 +26,5 @@ export class CommentController {
 
   public async deleteComment(id: string): Promise<string> {
     return await this.commentService.deleteComment(id)
-  }
-
-  public async getCommentByName(name: string): Promise<IComment[]> {
-    return await this.commentService.getCommentByName(name)
   }
 }

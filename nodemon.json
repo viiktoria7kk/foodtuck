@@ -1,6 +1,0 @@
-{
-  "watch": ["app.ts", "src/**/*.ts", "src/app.ts"],
-  "exec": "ts-node --project tsconfig.json src/app.ts -- -I",
-  "ext": "js ts",
-  "stdin": false
-}

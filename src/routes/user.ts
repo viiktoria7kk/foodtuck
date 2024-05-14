@@ -3,6 +3,7 @@ import { UserController } from '../controllers/user'
 
 export const userRouter = Router()
 const userController = new UserController()
+
 /**
  * @openapi
  * tags:
@@ -12,7 +13,7 @@ const userController = new UserController()
 
 /**
  * @openapi
- * /user:
+ * /users:
  *   get:
  *     tags:
  *       - Users
@@ -23,9 +24,9 @@ const userController = new UserController()
  *         content:
  *           application/json:
  *             schema:
- *               $ref: '#/components/schemas/User'
- *       '400':
- *         description: Bad request
+ *               type: array
+ *               items:
+ *                 $ref: '#/components/schemas/User'
  *       '500':
  *         description: Internal server error
  */
@@ -33,17 +34,24 @@ userRouter.get('/', userController.getUser)
 
 /**
  * @openapi
- * /user:
- *   put:
+ * /users/{id}:
+ *   patch:
  *     tags:
  *       - Users
  *     summary: Update a user
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         schema:
+ *           type: string
+ *         description: User ID
  *     requestBody:
  *       required: true
  *       content:
  *         application/json:
  *           schema:
- *             $ref: '#/components/schemas/User'
+ *             $ref: '#/components/schemas/UpdateUserDto'
  *     responses:
  *       '200':
  *         description: Updated user object
@@ -51,16 +59,14 @@ userRouter.get('/', userController.getUser)
  *           application/json:
  *             schema:
  *               $ref: '#/components/schemas/User'
- *       '400':
- *         description: Bad request
  *       '500':
  *         description: Internal server error
  */
-userRouter.put('/', userController.updateUser)
+userRouter.patch('/:id', userController.updateUser)
 
 /**
  * @openapi
- * /user/{id}:
+ * /users/{id}:
  *   delete:
  *     tags:
  *       - Users
@@ -71,12 +77,10 @@ userRouter.put('/', userController.updateUser)
  *         required: true
  *         schema:
  *           type: string
- *         description: User id
+ *         description: User ID
  *     responses:
  *       '200':
  *         description: User deleted
- *       '400':
- *         description: Bad request
  *       '500':
  *         description: Internal server error
  */
@@ -84,7 +88,7 @@ userRouter.delete('/:id', userController.deleteUser)
 
 /**
  * @openapi
- * /user/{id}:
+ * /users/{id}:
  *   get:
  *     tags:
  *       - Users
@@ -95,7 +99,7 @@ userRouter.delete('/:id', userController.deleteUser)
  *         required: true
  *         schema:
  *           type: string
- *         description: User id
+ *         description: User ID
  *     responses:
  *       '200':
  *         description: A user object
@@ -103,8 +107,6 @@ userRouter.delete('/:id', userController.deleteUser)
  *           application/json:
  *             schema:
  *               $ref: '#/components/schemas/User'
- *       '400':
- *         description: Bad request
  *       '404':
  *         description: User not found
  *       '500':
@@ -114,7 +116,7 @@ userRouter.get('/:id', userController.getUserById)
 
 /**
  * @openapi
- * /user/email/{email}:
+ * /users/email/{email}:
  *   get:
  *     tags:
  *       - Users
@@ -133,8 +135,6 @@ userRouter.get('/:id', userController.getUserById)
  *           application/json:
  *             schema:
  *               $ref: '#/components/schemas/User'
- *       '400':
- *         description: Bad request
  *       '404':
  *         description: User not found
  *       '500':
@@ -144,7 +144,7 @@ userRouter.get('/email/:email', userController.getUserByEmail)
 
 /**
  * @openapi
- * /user/sign-up:
+ * /users/sign-up:
  *   post:
  *     tags:
  *       - Users
@@ -167,8 +167,6 @@ userRouter.get('/email/:email', userController.getUserByEmail)
  *                   $ref: '#/components/schemas/User'
  *                 token:
  *                   type: string
- *       '400':
- *         description: Bad request
  *       '500':
  *         description: Internal server error
  */
@@ -176,7 +174,7 @@ userRouter.post('/sign-up', userController.signUp)
 
 /**
  * @openapi
- * /user/sign-in:
+ * /users/sign-in:
  *   post:
  *     tags:
  *       - Users
@@ -199,8 +197,6 @@ userRouter.post('/sign-up', userController.signUp)
  *                   $ref: '#/components/schemas/User'
  *                 token:
  *                   type: string
- *       '400':
- *         description: Bad request
  *       '401':
  *         description: Unauthorized
  *       '500':

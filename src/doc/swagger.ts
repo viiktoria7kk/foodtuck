@@ -15,7 +15,7 @@ const options: swaggerJsdoc.Options = {
     // ],
     servers: [
       {
-        url: 'http://localhost:4000/api/',
+        url: 'https://foodtuck-api-e276cb8c0038.herokuapp.com/',
       },
     ],
   },

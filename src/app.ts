@@ -1,14 +1,14 @@
-import { userRouter } from './routes/user'
-import { dishRouter } from './routes/dish'
 import express, { Application } from 'express'
-import dotenv from 'dotenv'
-import { teamMemberRouter } from './routes/teamMember'
-import { cheekoutRouter } from './routes/cheekout'
-import { commentRouter } from './routes/comment'
-import { postRouter } from './routes/post'
-import { swaggerSetup } from './doc/swagger'
-import cors from 'cors'
 import { connectDB } from './db/db'
+import { swaggerSetup } from './doc/swagger'
+import { cheekoutRouter } from './routes/cheekout' // Fix the typo here
+import { commentRouter } from './routes/comment'
+import { dishRouter } from './routes/dish'
+import { postRouter } from './routes/post'
+import { teamMembersRouter } from './routes/teamMember'
+import { userRouter } from './routes/user'
+import dotenv from 'dotenv'
+import cors from 'cors'
 
 dotenv.config()
 const app: Application = express()
@@ -22,12 +22,12 @@ app.use(express.urlencoded({ extended: true }))
 
 app.use('/users', userRouter)
 app.use('/dishes', dishRouter)
-app.use('/team-members', teamMemberRouter)
+app.use('/team-members', teamMembersRouter)
 app.use('/cheekouts', cheekoutRouter)
 app.use('/comments', commentRouter)
 app.use('/posts', postRouter)
 
-const PORT = process.env.PORT
+const PORT = process.env.PORT || 3000
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`)
   swaggerSetup(app)

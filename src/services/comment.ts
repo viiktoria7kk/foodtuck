@@ -1,11 +1,15 @@
+import { CreateCommentDto } from '../models/create.comment.dto'
 import { Comment } from '../models/Comment'
 import { IComment } from '../models/Comment'
+import { PostService } from './post'
 
 export class CommentService {
-  public async createComment(comment: IComment): Promise<IComment> {
+  public async createComment(comment: CreateCommentDto): Promise<IComment> {
     try {
       const newComment = new Comment(comment)
       await newComment.save()
+      const postService = new PostService()
+      await postService.addCommentToPost(comment.postId, newComment.id)
       return newComment
     } catch (error) {
       throw error
@@ -34,15 +38,6 @@ export class CommentService {
     try {
       await Comment.findByIdAndDelete(id)
       return 'Comment deleted successfully'
-    } catch (error) {
-      throw error
-    }
-  }
-
-  public async getCommentByName(name: string): Promise<IComment[]> {
-    try {
-      const comments = await Comment.find({ name: name })
-      return comments
     } catch (error) {
       throw error
     }

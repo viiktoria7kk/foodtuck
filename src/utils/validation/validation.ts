@@ -1,14 +1,13 @@
 import Joi from 'joi'
-import { IComment } from 'src/models/Comment'
-import { IUser } from 'src/models/User'
+import { IDish } from '../../models/Dish'
+import { ITeamMember } from '../../models/TeamMember'
+import { IUser } from '../../models/User'
+import { CreateCheekoutDto } from '../../models/create.cheekout.dto'
+import { CreateCommentDto } from '../../models/create.comment.dto'
+import { CreatePostDto } from '../../models/create.post.dto'
+import { SignInDto } from '../../models/sign-in.dto'
+import { SignUpDto } from '../../models/sign-up.dto'
 import { Categories } from '../enums/categories'
-import { IDish } from 'src/models/Dish'
-import { ICheekout } from 'src/models/Cheekout'
-import { ITeamMember } from 'src/models/TeamMember'
-import { IPost } from 'src/models/Post'
-import { SignUpDto } from 'src/models/sign-up.dto'
-import { SignInDto } from 'src/models/sign-in.dto'
-import { CreateCheekoutDto } from 'src/models/create.cheekout.dto'
 
 const userSchema = Joi.object({
   name: Joi.string().required(),
@@ -40,11 +39,10 @@ export const validateSignIn = (user: SignInDto) => {
   return schema.validate(user)
 }
 
-export const validateComment = (comment: IComment) => {
+export const validateComment = (comment: CreateCommentDto) => {
   const schema = Joi.object({
-    user: Joi.object(userSchema).required(),
+    userId: Joi.string().required(),
     content: Joi.string().required(),
-    date: Joi.date().required(),
     postId: Joi.string().required(),
   })
 
@@ -95,10 +93,9 @@ export const validateTeamMember = (teamMember: ITeamMember) => {
   return schema.validate(teamMember)
 }
 
-export const validatePost = (post: IPost) => {
+export const validatePost = (post: CreatePostDto) => {
   const schema = Joi.object({
-    img: Joi.array().items(Joi.string()).required(),
-    date: Joi.date().required(),
+    img: Joi.array().items(Joi.string()),
     title: Joi.string().required(),
     description: Joi.string().required(),
     text: Joi.string().required(),
