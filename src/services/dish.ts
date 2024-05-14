@@ -1,65 +1,50 @@
-import { Request, Response } from 'express'
-import { Dish } from '../models/Dish'
-import { DishType } from '../types/Dish'
+import { Categories } from '../utils/enums/categories'
+import { Dish, IDish } from '../models/Dish'
 
 export class DishService {
-  public async createDish(req: Request, res: Response): Promise<Response> {
+  public async createDish(dish: IDish): Promise<IDish> {
     try {
-      const dish: DishType = req.body
       const newDish = new Dish(dish)
       await newDish.save()
-      return res.status(201).json(newDish)
+      return newDish
     } catch (error) {
-      res.status(500).json({ error: error.message })
+      throw error
     }
   }
 
-  public async getDish(req: Request, res: Response): Promise<Response> {
+  public async getDish(): Promise<IDish[]> {
     try {
       const dishes = await Dish.find()
-      return res.status(200).json(dishes)
+      return dishes
     } catch (error) {
-      res.status(500).json({ error: error.message })
+      throw error
     }
   }
 
-  public async updateDish(req: Request, res: Response): Promise<Response> {
+  public async updateDish(dish: IDish): Promise<IDish | null> {
     try {
-      const { id } = req.params
-      const dish = await Dish.findByIdAndUpdate({ _id: id }, req.body, { new: true })
-      return res.status(200).json(dish)
+      const updatedDish = await Dish.findByIdAndUpdate(dish.id, dish, { new: true })
+      return updatedDish
     } catch (error) {
-      res.status(500).json({ error: error.message })
+      throw error
     }
   }
 
-  public async deleteDish(req: Request, res: Response): Promise<Response> {
+  public async deleteDish(id: string): Promise<string> {
     try {
-      const { id } = req.params
       await Dish.findByIdAndDelete({ _id: id })
-      return res.status(204).json()
+      return 'Dish deleted successfully'
     } catch (error) {
-      res.status(500).json({ error: error.message })
+      throw error
     }
   }
 
-  public async getDishById(req: Request, res: Response): Promise<Response> {
+  public async getDishById(id: string): Promise<IDish | null> {
     try {
-      const { id } = req.params
       const dish = await Dish.findById({ _id: id })
-      return res.status(200).json(dish)
+      return dish
     } catch (error) {
-      res.status(500).json({ error: error.message })
-    }
-  }
-
-  public async getDishByCategory(req: Request, res: Response): Promise<Response> {
-    try {
-      const { category } = req.params
-      const dishes = await Dish.find({ category: category })
-      return res.status(200).json(dishes)
-    } catch (error) {
-      res.status(500).json({ error: error.message })
+      throw error
     }
   }
 }

@@ -1,70 +1,49 @@
-import { TeamMemberService } from '../services/teamMember'
 import { Request, Response } from 'express'
+import { TeamMemberService } from '../services/teamMember'
 import { validateTeamMember } from '../utils/validation/validation'
+import { ITeamMember } from '../models/TeamMember'
 
 export class TeamMemberController {
-  public async createTeamMember(req: Request, res: Response): Promise<void> {
+  constructor(private teamMemberService: TeamMemberService = new TeamMemberService()) {}
+
+  createTeamMember = async (req: Request, res: Response): Promise<void> => {
     try {
-      const { error } = validateTeamMember(req.body)
-      if (error) {
-        res.status(400).json({ error: error.details[0].message })
-        return
-      }
-      const teamMemberService = new TeamMemberService()
-      const teamMember = await teamMemberService.createTeamMember(req.body)
-      res.status(201).json(teamMember)
+      const teamMember: ITeamMember = req.body
+      const { error } = validateTeamMember(teamMember)
+      if (error) throw new Error(error.details[0].message)
+      const createdTeamMember = await this.teamMemberService.createTeamMember(teamMember)
+      res.status(200).json(createdTeamMember)
     } catch (error) {
-      if (!res.headersSent) {
-        res.status(500).json({ error: error.message })
-      }
+      res.status(500).json({ message: error.message })
     }
   }
 
-  public async getTeamMember(req: Request, res: Response): Promise<void> {
+  getTeamMember = async (req: Request, res: Response): Promise<void> => {
     try {
-      const teamMemberService = new TeamMemberService()
-      const teamMembers = await teamMemberService.getTeamMember()
+      const teamMembers = await this.teamMemberService.getTeamMember()
       res.status(200).json(teamMembers)
     } catch (error) {
-      if (!res.headersSent) {
-        res.status(500).json({ error: error.message })
-      }
-    }
-  }
-  
-  public async getTeamMemberById(req: Request, res: Response): Promise<void> {
-    try {
-      const teamMemberService = new TeamMemberService()
-      const teamMember = await teamMemberService.getTeamMemberById(req.params.id)
-      res.status(200).json(teamMember)
-    } catch (error) {
-      if (!res.headersSent) {
-        res.status(500).json({ error: error.message })
-      }
+      res.status(500).json({ message: error.message })
     }
   }
 
-  public async deleteTeamMember(req: Request, res: Response): Promise<void> {
+  getTeamMemberById = async (req: Request, res: Response): Promise<void> => {
     try {
-      const teamMemberService = new TeamMemberService()
-      await teamMemberService.deleteTeamMember(req.params.id)
-      res.status(204).json()
+      const id: string = req.params.id
+      const teamMember = await this.teamMemberService.getTeamMemberById(id)
+      res.status(200).json(teamMember)
     } catch (error) {
-      if (!res.headersSent) {
-        res.status(500).json({ error: error.message })
-      }
+      res.status(500).json({ message: error.message })
     }
   }
 
-  public async getTeamMemberByName(req: Request, res: Response): Promise<void> {
+  deleteTeamMember = async (req: Request, res: Response): Promise<void> => {
     try {
-      const teamMemberService = new TeamMemberService()
-      const teamMember = await teamMemberService.getTeamMemberByName(req.params.name)
-      res.status(200).json(teamMember)
+      const id: string = req.params.id
+      const message = await this.teamMemberService.deleteTeamMember(id)
+      res.status(200).json({ message })
     } catch (error) {
-      if (!res.headersSent) {
-        res.status(500).json({ error: error.message })
-      }
+      res.status(500).json({ message: error.message })
     }
   }
 }

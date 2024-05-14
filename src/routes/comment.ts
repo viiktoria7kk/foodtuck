@@ -13,7 +13,7 @@ const commentController = new CommentController()
 
 /**
  * @openapi
- * /comment:
+ * /comments:
  *   post:
  *     tags:
  *       - Comment
@@ -23,10 +23,14 @@ const commentController = new CommentController()
  *       content:
  *         application/json:
  *           schema:
- *             $ref: '#/components/schemas/Comment'
+ *             $ref: '#/components/schemas/CreateCommentDto'
  *     responses:
  *       '201':
  *         description: Created
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/Comment'
  *       '400':
  *         description: Bad request
  *       '500':
@@ -36,7 +40,7 @@ commentRouter.post('/', commentController.createComment)
 
 /**
  * @openapi
- * /comment:
+ * /comments:
  *   get:
  *     tags:
  *       - Comment
@@ -44,16 +48,22 @@ commentRouter.post('/', commentController.createComment)
  *     responses:
  *       '200':
  *         description: A list of comments
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: array
+ *               items:
+ *                 $ref: '#/components/schemas/Comment'
  *       '400':
  *         description: Bad request
  *       '500':
  *         description: Internal server error
  */
-commentRouter.get('/', commentController.getComment)
+commentRouter.get('/', commentController.getComments)
 
 /**
  * @openapi
- * /comment/{id}:
+ * /comments/{id}:
  *   get:
  *     tags:
  *       - Comment
@@ -67,6 +77,10 @@ commentRouter.get('/', commentController.getComment)
  *     responses:
  *       '200':
  *         description: A comment object
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/Comment'
  *       '400':
  *         description: Bad request
  *       '404':
@@ -78,7 +92,7 @@ commentRouter.get('/:id', commentController.getCommentById)
 
 /**
  * @openapi
- * /comment/{id}:
+ * /comments/{id}:
  *   delete:
  *     tags:
  *       - Comment
@@ -98,59 +112,3 @@ commentRouter.get('/:id', commentController.getCommentById)
  *         description: Internal server error
  */
 commentRouter.delete('/:id', commentController.deleteComment)
-
-/**
- * @openapi
- * /comment/name/{name}:
- *   get:
- *     tags:
- *       - Comment
- *     summary: Get a comment by name
- *     parameters:
- *       - in: path
- *         name: name
- *         required: true
- *         schema:
- *           type: string
- *     responses:
- *       '200':
- *         description: A comment object
- *       '400':
- *         description: Bad request
- *       '404':
- *         description: Comment not found
- *       '500':
- *         description: Internal server error
- */
-commentRouter.get('/name/:name', commentController.getCommentByName)
-
-/**
- * @openapi
- * /comment/{id}:
- *   put:
- *     tags:
- *       - Comment
- *     summary: Update a comment by id
- *     parameters:
- *       - in: path
- *         name: id
- *         required: true
- *         schema:
- *           type: string
- *     requestBody:
- *       required: true
- *       content:
- *         application/json:
- *           schema:
- *             $ref: '#/components/schemas/Comment'
- *     responses:
- *       '200':
- *         description: Updated successfully
- *       '400':
- *         description: Bad request
- *       '404':
- *         description: Comment not found
- *       '500':
- *         description: Internal server error
- */
-commentRouter.put('/:id', commentController.updateCommentById)

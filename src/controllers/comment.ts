@@ -1,77 +1,61 @@
-import { CommentService } from '../services/comment'
 import { Request, Response } from 'express'
+import { CommentService } from '../services/comment'
 import { validateComment } from '../utils/validation/validation'
+import { CreateCommentDto } from '../models/create.comment.dto'
+import { IComment } from '../models/Comment'
 
 export class CommentController {
-  private commentService: CommentService = new CommentService()
+  private commentService: CommentService
+
+  constructor() {
+    this.commentService = new CommentService()
+  }
 
   public createComment = async (req: Request, res: Response): Promise<void> => {
     try {
-      const { error } = validateComment(req.body)
+      const comment: CreateCommentDto = req.body
+      const { error } = validateComment(comment)
       if (error) {
-        res.status(400).json({ error: error.details[0].message })
+        res.status(400).json({ message: error.details[0].message })
         return
       }
-      const comment = req.body
-      const newComment = await this.commentService.createComment(comment)
-      res.status(201).json(newComment)
+      const createdComment = await this.commentService.createComment(comment)
+      res.status(201).json(createdComment)
     } catch (error) {
-      res.status(400).json({ error: error.message })
+      res.status(500).json({ message: error.message })
     }
   }
 
-  public getComment = async (req: Request, res: Response): Promise<void> => {
+  public getComments = async (req: Request, res: Response): Promise<void> => {
     try {
-      const comments = await this.commentService.getComment()
+      const comments = await this.commentService.getComments()
       res.status(200).json(comments)
     } catch (error) {
-      res.status(400).json({ error: error.message })
-    }
-  }
-
-  public getCommentById = async (req: Request, res: Response): Promise<void> => {
-    try {
-      const id = req.params.id
-      const comment = await this.commentService.getCommentById(id)
-      res.status(200).json(comment)
-    } catch (error) {
-      res.status(400).json({ error: error.message })
+      res.status(500).json({ message: error.message })
     }
   }
 
   public deleteComment = async (req: Request, res: Response): Promise<void> => {
     try {
-      const id = req.params.id
+      const id: string = req.params.id
       await this.commentService.deleteComment(id)
-      res.status(200).json({ message: 'Comment deleted' })
+      res.status(200).json({ message: 'Comment deleted successfully' })
     } catch (error) {
-      res.status(400).json({ error: error.message })
+      res.status(500).json({ message: error.message })
     }
   }
 
-  public getCommentByName = async (req: Request, res: Response): Promise<void> => {
+  public getCommentById = async (req: Request, res: Response): Promise<void> => {
     try {
-      const name = req.params.name
-      const comments = await this.commentService.getCommentByName(name)
-      res.status(200).json(comments)
-    } catch (error) {
-      res.status(400).json({ error: error.message })
-    }
-  }
-
-  public updateCommentById = async (req: Request, res: Response): Promise<void> => {
-    try {
-      const { error } = validateComment(req.body)
-      if (error) {
-        res.status(400).json({ error: error.details[0].message })
-        return
+      const id: string = req.params.id
+      const comment = await this.commentService.getCommentById(id)
+      if (!comment) {
+        res.status(404).json({ message: 'Comment not found' })
+      } else {
+        res.status(200).json(comment)
       }
-      const id = req.params.id
-      const comment = req.body
-      const updatedComment = await this.commentService.updateCommentById(id, comment)
-      res.status(200).json(updatedComment)
     } catch (error) {
-      res.status(400).json({ error: error.message })
+      res.status(500).json({ message: error.message })
     }
   }
 }

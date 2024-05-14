@@ -1,87 +1,62 @@
 import { Request, Response } from 'express'
 import { DishService } from '../services/dish'
 import { validateDish } from '../utils/validation/validation'
+import { IDish } from '../models/Dish'
 
 export class DishController {
-  public async createDish(req: Request, res: Response): Promise<void> {
+  constructor(private dishService: DishService = new DishService()) {}
+
+  createDish = async (req: Request, res: Response) => {
     try {
-      const { error } = validateDish(req.body)
+      const dish: IDish = req.body
+      const { error } = validateDish(dish)
       if (error) {
-        res.status(400).json({ error: error.details[0].message })
-        return
+        return res.status(400).json({ message: error.details[0].message })
       }
-      const dishService = new DishService()
-      const newDish = await dishService.createDish(req, res)
-      res.status(201).json(newDish)
+
+      const createdDish = await this.dishService.createDish(dish)
+      res.status(201).json(createdDish)
     } catch (error) {
-      if (!res.headersSent) {
-        res.status(500).json({ error: error.message })
-      }
+      res.status(500).json({ message: error.message })
     }
   }
 
-  public async getDish(req: Request, res: Response): Promise<void> {
+  getDish = async (req: Request, res: Response): Promise<void> => {
     try {
-      const dishService = new DishService()
-      const dishes = await dishService.getDish(req, res)
+      const dishes = await this.dishService.getDish()
       res.status(200).json(dishes)
     } catch (error) {
-      if (!res.headersSent) {
-        res.status(500).json({ error: error.message })
-      }
+      res.status(500).json({ message: error.message })
     }
   }
 
-  public async updateDish(req: Request, res: Response): Promise<void> {
+  updateDish = async (req: Request, res: Response): Promise<void> => {
     try {
-      const { error } = validateDish(req.body)
-      if (error) {
-        res.status(400).json({ error: error.details[0].message })
-        return
-      }
-      const dishService = new DishService()
-      const updatedDish = await dishService.updateDish(req, res)
+      const dish: IDish = req.body
+      const updatedDish = await this.dishService.updateDish(dish)
       res.status(200).json(updatedDish)
     } catch (error) {
-      if (!res.headersSent) {
-        res.status(500).json({ error: error.message })
-      }
+      res.status(500).json({ message: error.message })
     }
   }
 
-  public async deleteDish(req: Request, res: Response): Promise<void> {
+  deleteDish = async (req: Request, res: Response): Promise<void> => {
     try {
-      const dishService = new DishService()
-      await dishService.deleteDish(req, res)
-      res.status(204).json()
+      const id: string = req.params.id
+      const message = await this.dishService.deleteDish(id)
+      res.status(200).json({ message })
     } catch (error) {
-      if (!res.headersSent) {
-        res.status(500).json({ error: error.message })
-      }
+      res.status(500).json({ message: error.message })
     }
   }
 
-  public async getDishById(req: Request, res: Response): Promise<void> {
+  getDishById = async (req: Request, res: Response): Promise<void> => {
     try {
-      const dishService = new DishService()
-      const dish = await dishService.getDishById(req, res)
+      const id: string = req.params.id
+      const dish = await this.dishService.getDishById(id)
       res.status(200).json(dish)
     } catch (error) {
-      if (!res.headersSent) {
-        res.status(500).json({ error: error.message })
-      }
-    }
-  }
-
-  public async getDishByCategory(req: Request, res: Response): Promise<void> {
-    try {
-      const dishService = new DishService()
-      const dishes = await dishService.getDishByCategory(req, res)
-      res.status(200).json(dishes)
-    } catch (error) {
-      if (!res.headersSent) {
-        res.status(500).json({ error: error.message })
-      }
+      res.status(500).json({ message: error.message })
     }
   }
 }

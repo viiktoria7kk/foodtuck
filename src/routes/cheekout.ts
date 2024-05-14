@@ -22,10 +22,14 @@ const cheekoutController = new CheekoutController()
  *       content:
  *         application/json:
  *           schema:
- *             $ref: '#/components/schemas/Cheekout'
+ *             $ref: '#/components/schemas/CreateCheekoutDto'
  *     responses:
  *       '201':
- *         description: Created
+ *         description: A cheekout object
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/Cheekout'
  *       '400':
  *         description: Bad request
  *       '500':
@@ -42,6 +46,12 @@ cheekoutRouter.post('/', cheekoutController.createCheekout)
  *     responses:
  *       '200':
  *         description: A list of cheekouts
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: array
+ *               items:
+ *                 $ref: '#/components/schemas/Cheekout'
  *       '400':
  *         description: Bad request
  *       '500':
@@ -64,6 +74,10 @@ cheekoutRouter.get('/', cheekoutController.getCheekout)
  *     responses:
  *       '200':
  *         description: A cheekout object
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/Cheekout'
  *       '400':
  *         description: Bad request
  *       '404':
@@ -109,7 +123,13 @@ cheekoutRouter.delete('/:id', cheekoutController.deleteCheekout)
  *           type: string
  *     responses:
  *       '200':
- *         description: A cheekout object
+ *         description: A list of cheekouts
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: array
+ *               items:
+ *                 $ref: '#/components/schemas/Cheekout'
  *       '400':
  *         description: Bad request
  *       '404':
@@ -118,33 +138,3 @@ cheekoutRouter.delete('/:id', cheekoutController.deleteCheekout)
  *         description: Internal server error
  */
 cheekoutRouter.get('/name/:name', cheekoutController.getCheekoutByName)
-
-/**
- * @openapi
- * /cheekout/{id}:
- *   put:
- *     summary: Update a cheekout by ID
- *     tags: [Cheekout]
- *     parameters:
- *       - in: path
- *         name: id
- *         required: true
- *         schema:
- *           type: string
- *     requestBody:
- *       required: true
- *       content:
- *         application/json:
- *           schema:
- *             $ref: '#/components/schemas/Cheekout'
- *     responses:
- *       '200':
- *         description: Cheekout updated
- *       '400':
- *         description: Bad request
- *       '404':
- *         description: Cheekout not found
- *       '500':
- *         description: Internal server error
- */
-cheekoutRouter.put('/:id', cheekoutController.updateCheekoutById)

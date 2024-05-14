@@ -7,45 +7,26 @@ const userController = new UserController()
 /**
  * @openapi
  * tags:
- *   name: User
+ *   name: Users
  *   description: Operations related to users
  */
 
 /**
  * @openapi
- * /user:
- *   post:
- *     tags:
- *       - User
- *     summary: Create a new user
- *     requestBody:
- *       required: true
- *       content:
- *         application/json:
- *           schema:
- *             $ref: '#/components/schemas/User'
- *     responses:
- *       '201':
- *         description: Created
- *       '400':
- *         description: Bad request
- *       '500':
- *         description: Internal server error
- */
-userRouter.post('/', userController.createUser)
-
-/**
- * @openapi
- * /user:
+ * /users:
  *   get:
  *     tags:
- *       - User
+ *       - Users
  *     summary: Get all users
  *     responses:
  *       '200':
  *         description: A list of users
- *       '400':
- *         description: Bad request
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: array
+ *               items:
+ *                 $ref: '#/components/schemas/User'
  *       '500':
  *         description: Internal server error
  */
@@ -53,10 +34,64 @@ userRouter.get('/', userController.getUser)
 
 /**
  * @openapi
- * /user/{id}:
+ * /users/{id}:
+ *   patch:
+ *     tags:
+ *       - Users
+ *     summary: Update a user
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         schema:
+ *           type: string
+ *         description: User ID
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             $ref: '#/components/schemas/UpdateUserDto'
+ *     responses:
+ *       '200':
+ *         description: Updated user object
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/User'
+ *       '500':
+ *         description: Internal server error
+ */
+userRouter.patch('/:id', userController.updateUser)
+
+/**
+ * @openapi
+ * /users/{id}:
+ *   delete:
+ *     tags:
+ *       - Users
+ *     summary: Delete a user
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         schema:
+ *           type: string
+ *         description: User ID
+ *     responses:
+ *       '200':
+ *         description: User deleted
+ *       '500':
+ *         description: Internal server error
+ */
+userRouter.delete('/:id', userController.deleteUser)
+
+/**
+ * @openapi
+ * /users/{id}:
  *   get:
  *     tags:
- *       - User
+ *       - Users
  *     summary: Get a user by id
  *     parameters:
  *       - in: path
@@ -64,11 +99,14 @@ userRouter.get('/', userController.getUser)
  *         required: true
  *         schema:
  *           type: string
+ *         description: User ID
  *     responses:
  *       '200':
  *         description: A user object
- *       '400':
- *         description: Bad request
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/User'
  *       '404':
  *         description: User not found
  *       '500':
@@ -78,64 +116,10 @@ userRouter.get('/:id', userController.getUserById)
 
 /**
  * @openapi
- * /user/{id}:
- *   put:
- *     tags:
- *       - User
- *     summary: Update a user by id
- *     parameters:
- *       - in: path
- *         name: id
- *         required: true
- *         schema:
- *           type: string
- *     requestBody:
- *       required: true
- *       content:
- *         application/json:
- *           schema:
- *             $ref: '#/components/schemas/User'
- *     responses:
- *       '200':
- *         description: Updated successfully
- *       '400':
- *         description: Bad request
- *       '404':
- *         description: User not found
- *       '500':
- *         description: Internal server error
- */
-userRouter.put('/:id', userController.updateUser)
-
-/**
- * @openapi
- * /user/{id}:
- *   delete:
- *     tags:
- *       - User
- *     summary: Delete a user by id
- *     parameters:
- *       - in: path
- *         name: id
- *         required: true
- *         schema:
- *           type: string
- *     responses:
- *       '204':
- *         description: User deleted
- *       '404':
- *         description: User not found
- *       '500':
- *         description: Internal server error
- */
-userRouter.delete('/:id', userController.deleteUser)
-
-/**
- * @openapi
- * /user/em/{email}:
+ * /users/email/{email}:
  *   get:
  *     tags:
- *       - User
+ *       - Users
  *     summary: Get a user by email
  *     parameters:
  *       - in: path
@@ -143,70 +127,79 @@ userRouter.delete('/:id', userController.deleteUser)
  *         required: true
  *         schema:
  *           type: string
+ *         description: User email
  *     responses:
  *       '200':
  *         description: A user object
- *       '400':
- *         description: Bad request
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/User'
  *       '404':
  *         description: User not found
  *       '500':
  *         description: Internal server error
  */
-userRouter.get('/em/:email', userController.getUserByEmail)
+userRouter.get('/email/:email', userController.getUserByEmail)
 
 /**
  * @openapi
- * /user/login:
+ * /users/sign-up:
  *   post:
  *     tags:
- *       - User
- *     summary: Login user
+ *       - Users
+ *     summary: Sign up
  *     requestBody:
  *       required: true
  *       content:
  *         application/json:
  *           schema:
- *             type: object
- *             properties:
- *               email:
- *                 type: string
- *               password:
- *                 type: string
- *             required:
- *               - email
- *               - password
+ *             $ref: '#/components/schemas/SignUpDto'
  *     responses:
  *       '200':
- *         description: Logged in successfully
- *       '400':
- *         description: Bad request
+ *         description: User successfully signed up
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 user:
+ *                   $ref: '#/components/schemas/User'
+ *                 token:
+ *                   type: string
+ *       '500':
+ *         description: Internal server error
+ */
+userRouter.post('/sign-up', userController.signUp)
+
+/**
+ * @openapi
+ * /users/sign-in:
+ *   post:
+ *     tags:
+ *       - Users
+ *     summary: Sign in
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             $ref: '#/components/schemas/SignInDto'
+ *     responses:
+ *       '200':
+ *         description: User successfully signed in
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 user:
+ *                   $ref: '#/components/schemas/User'
+ *                 token:
+ *                   type: string
  *       '401':
  *         description: Unauthorized
  *       '500':
  *         description: Internal server error
  */
-userRouter.post('/login', userController.loginUser)
-
-/**
- * @openapi
- * /user/register:
- *   post:
- *     tags:
- *       - User
- *     summary: Register user
- *     requestBody:
- *       required: true
- *       content:
- *         application/json:
- *           schema:
- *             $ref: '#/components/schemas/User'
- *     responses:
- *       '201':
- *         description: Registered successfully
- *       '400':
- *         description: Bad request
- *       '500':
- *         description: Internal server error
- */
-userRouter.post('/register', userController.registerUser)
+userRouter.post('/sign-in', userController.signIn)

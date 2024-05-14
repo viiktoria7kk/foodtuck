@@ -1,8 +1,9 @@
+import { CreateCheekoutDto } from '../models/create.cheekout.dto'
 import { Cheekout } from '../models/Cheekout'
-import { CheekoutType } from '../types/Cheekout'
+import { ICheekout } from '../models/Cheekout'
 
 export class CheekoutService {
-  public async createCheekout(cheekout: CheekoutType): Promise<CheekoutType> {
+  public async createCheekout(cheekout: CreateCheekoutDto): Promise<ICheekout> {
     try {
       const newCheekout = new Cheekout(cheekout)
       await newCheekout.save()
@@ -12,7 +13,7 @@ export class CheekoutService {
     }
   }
 
-  public async getCheekout(): Promise<CheekoutType[]> {
+  public async getCheekout(): Promise<ICheekout[]> {
     try {
       const cheekouts = await Cheekout.find()
       return cheekouts.map((cheekout) => cheekout.toObject())
@@ -21,7 +22,7 @@ export class CheekoutService {
     }
   }
 
-  public async getCheekoutById(id: string): Promise<CheekoutType> {
+  public async getCheekoutById(id: string): Promise<ICheekout> {
     try {
       const cheekout = await Cheekout.findById(id)
       return cheekout.toObject()
@@ -30,27 +31,19 @@ export class CheekoutService {
     }
   }
 
-  public async deleteCheekout(id: string): Promise<void> {
+  public async deleteCheekout(id: string): Promise<string> {
     try {
       await Cheekout.findByIdAndDelete(id)
+      return 'Cheekout deleted successfully'
     } catch (error) {
       throw error
     }
   }
 
-  public async getCheekoutByName(name: string): Promise<CheekoutType[]> {
+  public async getCheekoutByName(name: string): Promise<ICheekout[]> {
     try {
       const cheekouts = await Cheekout.find({ name: name })
       return cheekouts.map((cheekout) => cheekout.toObject())
-    } catch (error) {
-      throw error
-    }
-  }
-
-  public async updateCheekoutById(id: string, cheekout: CheekoutType): Promise<CheekoutType> {
-    try {
-      const updatedCheekout = await Cheekout.findByIdAndUpdate(id, cheekout, { new: true })
-      return updatedCheekout.toObject()
     } catch (error) {
       throw error
     }
