@@ -7,6 +7,7 @@ import { CreateCheekoutDto } from '../../models/create.cheekout.dto'
 import { CreateCommentDto } from '../../models/create.comment.dto'
 import { CreatePostDto } from '../../models/create.post.dto'
 import { Categories } from '../enums/categories'
+import { Types } from 'mongoose'
 
 export const validateSignUp = (user: SignUpDto) => {
   const schema = Joi.object({
@@ -37,7 +38,6 @@ export const validateComment = (comment: CreateCommentDto) => {
   return schema.validate(comment)
 }
 
-
 const dishSchema = Joi.object({
   img: Joi.string(),
   calories: Joi.number().optional(),
@@ -58,15 +58,23 @@ export const validateDish = (dish: IDish) => {
 
 export const validateCheekout = (cheekout: CreateCheekoutDto) => {
   const schema = Joi.object({
-    firstName: Joi.string().required(),
-    lastName: Joi.string().required(),
+    name: Joi.string().required(),
     email: Joi.string().required(),
     phone: Joi.string().required(),
     address: Joi.string().required(),
     city: Joi.string().required(),
     country: Joi.string().required(),
     total: Joi.number().required(),
-    dishesId: Joi.array().items(Joi.string()).required(),
+    dishesId: Joi.array()
+      .items(
+        Joi.string().custom((value, helpers) => {
+          if (!Types.ObjectId.isValid(value)) {
+            return helpers.error('any.invalid')
+          }
+          return value
+        }),
+      )
+      .required(),
   })
 
   return schema.validate(cheekout)
