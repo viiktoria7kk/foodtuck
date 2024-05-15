@@ -44,6 +44,9 @@ export class PostService {
   public async addCommentToPost(postId: Types.ObjectId, commentId: Types.ObjectId): Promise<IPost> {
     try {
       const post = await Post.findById(postId)
+      if (!post) {
+        throw new Error('Post not found')
+      }
       post.comments.push(commentId)
       await post.save()
       return post
