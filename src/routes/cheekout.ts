@@ -13,7 +13,7 @@ const cheekoutController = new CheekoutController()
 
 /**
  * @openapi
- * /cheekout:
+ * /cheekouts:
  *   post:
  *     summary: Create a new cheekout
  *     tags: [Cheekout]
@@ -39,7 +39,7 @@ cheekoutRouter.post('/', cheekoutController.createCheekout)
 
 /**
  * @openapi
- * /cheekout:
+ * /cheekouts:
  *   get:
  *     summary: Get all cheekouts
  *     tags: [Cheekout]
@@ -61,7 +61,7 @@ cheekoutRouter.get('/', cheekoutController.getCheekout)
 
 /**
  * @openapi
- * /cheekout/{id}:
+ * /cheekouts/{id}:
  *   get:
  *     summary: Get a cheekout by ID
  *     tags: [Cheekout]
@@ -89,7 +89,7 @@ cheekoutRouter.get('/:id', cheekoutController.getCheekoutById)
 
 /**
  * @openapi
- * /cheekout/{id}:
+ * /cheekouts/{id}:
  *   delete:
  *     summary: Delete a cheekout by ID
  *     tags: [Cheekout]
@@ -111,7 +111,7 @@ cheekoutRouter.delete('/:id', cheekoutController.deleteCheekout)
 
 /**
  * @openapi
- * /cheekout/name/{name}:
+ * /cheekouts/name/{name}:
  *   get:
  *     summary: Get a cheekout by name
  *     tags: [Cheekout]

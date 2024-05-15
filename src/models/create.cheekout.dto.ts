@@ -1,3 +1,5 @@
+import { Types } from 'mongoose';
+
 /**
  * @openapi
  * components:
@@ -5,8 +7,7 @@
  *     CreateCheekoutDto:
  *       type: object
  *       required:
- *         - firstName
- *         - lastName
+ *         - name
  *         - email
  *         - phone
  *         - address
@@ -15,14 +16,10 @@
  *         - total
  *         - dishesId
  *       properties:
- *         firstName:
+ *         name:
  *           type: string
- *           description: The user's first name.
- *           example: John
- *         lastName:
- *           type: string
- *           description: The user's last name.
- *           example: Doe
+ *           description: The user's name.
+ *           example: John Doe
  *         email:
  *           type: string
  *           format: email
@@ -57,13 +54,12 @@
  *           example: ["60f7b1b4b3f3b3b3b3b3b3b3", "60f7b1b4b3f3b3b3b3b3b3b"]
  */
 export class CreateCheekoutDto {
-  firstName: string
-  lastName: string
+  name: string
   email: string
   phone: string
   address: string
   city: string
   country: string
   total: number
-  dishesId: string[]
+  dishesId: Types.ObjectId[]
 }
