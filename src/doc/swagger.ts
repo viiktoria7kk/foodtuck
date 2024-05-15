@@ -26,4 +26,3 @@ export const swaggerSetup = (app) => {
   const swaggerSpec = swaggerJsdoc(options)
   app.use('/api', swaggerUi.serve, swaggerUi.setup(swaggerSpec))
 }
-
