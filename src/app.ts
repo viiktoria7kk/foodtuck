@@ -1,16 +1,17 @@
 import express, { Application } from 'express'
 import { connectDB } from './db/db'
 import { swaggerSetup } from './doc/swagger'
-import { cheekoutRouter } from './routes/cheekout' // Fix the typo here
+import { cheekoutRouter } from './routes/cheekout'
 import { commentRouter } from './routes/comment'
 import { dishRouter } from './routes/dish'
 import { postRouter } from './routes/post'
 import { teamMembersRouter } from './routes/teamMember'
 import { userRouter } from './routes/user'
-import dotenv from 'dotenv'
 import cors from 'cors'
+import dotenv from 'dotenv'
 
 dotenv.config()
+
 const app: Application = express()
 
 connectDB()
