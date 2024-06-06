@@ -54,4 +54,18 @@ export class PostService {
       throw error
     }
   }
+
+  public async deleteCommentInPost(postId: Types.ObjectId, commentId: Types.ObjectId): Promise<string> {
+    try {
+      const post = await Post.findById(postId)
+      if (!post) {
+        throw new Error('Post not found')
+      }
+      post.comments = post.comments.filter((comment) => comment.toString() !== commentId.toString())
+      await post.save()
+      return 'Comment deleted in post'
+    } catch (error) {
+      throw error
+    }
+  }
 }

@@ -36,8 +36,11 @@ export class CommentService {
 
   public async deleteComment(id: string): Promise<string> {
     try {
+      const comment = await Comment.findByIdAndDelete(id)
+      const postService = new PostService()
+      await postService.deleteCommentInPost(comment.postId, comment.id)
       await Comment.findByIdAndDelete(id)
-      return 'Comment deleted successfully'
+      return 'Comment deleted'
     } catch (error) {
       throw error
     }
