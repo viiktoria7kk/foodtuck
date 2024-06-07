@@ -9,6 +9,7 @@ import { teamMembersRouter } from './routes/teamMember'
 import { userRouter } from './routes/user'
 import cors from 'cors'
 import dotenv from 'dotenv'
+import { stripeRouter } from './routes/stripe'
 
 dotenv.config()
 
@@ -27,6 +28,7 @@ app.use('/team-members', teamMembersRouter)
 app.use('/cheekouts', cheekoutRouter)
 app.use('/comments', commentRouter)
 app.use('/posts', postRouter)
+app.use('/stripe', stripeRouter)
 
 const PORT = process.env.PORT || 3000
 app.listen(PORT, () => {

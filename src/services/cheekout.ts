@@ -3,15 +3,16 @@ import { Cheekout } from '../models/Cheekout'
 import { ICheekout } from '../models/Cheekout'
 
 export class CheekoutService {
-  public async createCheekout(cheekout: CreateCheekoutDto): Promise<ICheekout> {
-    try {
-      const newCheekout = new Cheekout(cheekout)
-      await newCheekout.save()
-      return newCheekout.toObject()
-    } catch (error) {
-      throw error
-    }
-  }
+  // public async createCheekout(cheekout: CreateCheekoutDto): Promise<ICheekout> {
+  //   try {
+  //     const newCheekout = new Cheekout(cheekout)
+  //     await newCheekout.save()
+  //     return newCheekout.toObject()
+  //   } catch (error) {
+  //     throw error
+  //   }
+  // }
+  //add stripe
 
   public async getCheekout(): Promise<ICheekout[]> {
     try {
